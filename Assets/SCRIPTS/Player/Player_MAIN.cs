@@ -35,6 +35,7 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
     public bool InShop;
     public bool SafeZone;
     public bool DisableMovement;
+    public bool BossZone;
     public float MovementSpeed = 5f;
     public float PreviousMovement;
     public float gravity = -9.8f;
@@ -46,10 +47,10 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
 
     private void Start()
     {
-        controller = GetComponent<CharacterController>(); //Берем контроллер
-        PV = GetComponent<PhotonView>(); //Берем фотон
-        ZL = GetComponent<Zipline>(); //Берем скрипт отвечающий за зиплайны
-        KF = FindObjectOfType<KillFeed>(); //Берем скрипт отвечающий за киллфид
+        controller = GetComponent<CharacterController>(); //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        PV = GetComponent<PhotonView>(); //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+        ZL = GetComponent<Zipline>(); //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        KF = FindObjectOfType<KillFeed>(); //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         PreviousMovement = MovementSpeed;
 
         if (PV.IsMine)
@@ -184,6 +185,21 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
             SafeZone = true;
             GetComponent<PlayerSTAT>().SafeZone.gameObject.SetActive(true);
         }
+
+        if(other.tag == "BossGround")
+        {
+            BossZone = true;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "DamageGround")
+        {
+            Hater = FindObjectOfType<DarkBossSys>().gameObject;
+            GetComponent<PlayerSTAT>().Debuffs.Add(BuffList.PoisonDeBuff);
+            GetComponent<PlayerSTAT>().EnableDeBuff = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -210,6 +226,11 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
         {
             SafeZone = false;
             GetComponent<PlayerSTAT>().SafeZone.gameObject.SetActive(false);
+        }
+
+        if(other.tag == "BossGround")
+        {
+            BossZone = false;
         }
     }
 

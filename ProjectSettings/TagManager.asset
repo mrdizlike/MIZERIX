@@ -17,6 +17,8 @@ TagManager:
   - Throne
   - LightBoss
   - BossGround
+  - DamageGround
+  - DarkBoss
   layers:
   - Default
   - TransparentFX

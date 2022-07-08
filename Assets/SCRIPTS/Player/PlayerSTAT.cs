@@ -61,12 +61,12 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
     public Image HP_Bar;
     public Image HP_Backward_Bar;
     public Image EXP_Bar;
-    public Image HP_Player_Bar; // То что видят все игроки
+    public Image HP_Player_Bar; // пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     public Text SafeZone;
     public Text HP_Text;
     public Text LVL_text;
-    public Text HP_Player_Text; // То что видят все игроки
-    public Text LVL_Player_Text; // То что видят все игроки
+    public Text HP_Player_Text; // пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+    public Text LVL_Player_Text; // пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     public GameObject ClassInfo;
     public Text Kills_Text;
     public Text Deaths_Text;
@@ -199,7 +199,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
                 break;
             }
 
-            if (ItemName == "InfectedSkull") //InfectedSkull сброс
+            if (ItemName == "InfectedSkull") //InfectedSkull пїЅпїЅпїЅпїЅпїЅ
             {
                 HPRegen_Amount -= GetComponent<ItemSysScript>().InfectedSkull_NeedCount - 2;
                 GetComponent<ItemSysScript>().InfectedSkull_NeedCount = 2;
@@ -228,7 +228,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
 
         if (HP_Amount <= 0 && !Dead)
         {
-            photonView.RPC("PlayerDeadAndRespawn", RpcTarget.All, 0); //Смерть
+            photonView.RPC("PlayerDeadAndRespawn", RpcTarget.All, 0); //пїЅпїЅпїЅпїЅпїЅпїЅ
 
             foreach (Slot slot in GetComponent<Inventory>().slots)
             {
@@ -265,13 +265,13 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
             TimeForRespawn.text = ((int)RespawnTime).ToString();
             if (RespawnTime <= 0)
             {
-                photonView.RPC("PlayerDeadAndRespawn", RpcTarget.All, 2); //Возрождение
+                photonView.RPC("PlayerDeadAndRespawn", RpcTarget.All, 2); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                 RespawnTime = 5;
 
             }
         }
 
-        if (HPRegen_Amount > 0) //Регенерация ХП
+        if (HPRegen_Amount > 0) //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ
         {
             HPRegen_Time += Time.deltaTime;
 
@@ -287,7 +287,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
             HPRegen_Amount = 0;
         }
 
-        if (GetComponent<Player_MAIN>().SafeZone && HP_Amount < HP_MaxAmount) //Регенерация ХП в безопасной зоне
+        if (GetComponent<Player_MAIN>().SafeZone && HP_Amount < HP_MaxAmount) //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
         {
             HPRegen_Time += Time.deltaTime;
             if (HPRegen_Time >= 1)
@@ -389,10 +389,11 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
             ColliderSys.SetActive(false);
             ColliderTrigger.enabled = false;
             CharController.enabled = false;
+            PM.BossZone = false;
             GetComponent<Animator>().Play("Soldier_Die");
             Dead = true;
             DeathCount++;
-            if (PM.Hater != null && PM.Hater.name != "LightBoss")
+            if (PM.Hater != null && PM.Hater.name != "LightBoss" && PM.Hater.name != "DarkBoss")
             {
                 PM.KF.AddNewKillListing(PM.Hater.GetComponent<Player_MAIN>().PlayFab_Nickname, PM.PlayFab_Nickname);
 
@@ -401,7 +402,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
 
                 PM.Hater.GetComponent<GunScript>().SoundScript.DeathHitCheck();
 
-                if (PM.Hater.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.InfectedSkullBuff)) //Предмет
+                if (PM.Hater.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.InfectedSkullBuff)) //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                 {
                     PM.Hater.GetComponent<ItemSysScript>().InfectedSkull_Count++;
                 }
@@ -420,12 +421,26 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
                 PM.Hater = null;
             }
 
+            if(PM.Hater != null && PM.Hater.name == "DarkBoss")
+            {
+                PM.KF.AddNewKillListing("Summoner", PM.PlayFab_Nickname);
+                PM.Hater = null;
+            }
+
             if (Debuffs.Contains(BuffList.LightBossBuff))
             {
                 HP_MaxAmount -= 250;
                 DMG_Amount -= 25;
                 Armor_Amount -= 3;
                 GUI_Effects.PlayerEffect[9].SetActive(false);
+            }
+
+            if (Debuffs.Contains(BuffList.DarkBossBuff))
+            {
+                HP_MaxAmount -= 250;
+                DMG_Amount -= 25;
+                Armor_Amount -= 3;
+                GUI_Effects.PlayerEffect[10].SetActive(false);
             }
 
             Debuffs.RemoveAll(p => p.BuffType != Buff.BuffID.TyranitBelt_Buff);
@@ -527,7 +542,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
                 BuffList.PoisonDeBuff.Time = BuffList.PoisonBuff.Time;
             }
 
-            if (Buff.BuffType == Buff.BuffID.Electric_Debuff) //Доработать
+            if (Buff.BuffType == Buff.BuffID.Electric_Debuff) //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             {
                 BuffList.ElectricDebuff.Time = BuffList.ElectricCrownBuff.Time;
                 PM.MovementSpeed = PM.PreviousMovement;
@@ -619,6 +634,14 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
                 Armor_Amount -= 3;
                 GUI_Effects.PlayerEffect[9].SetActive(false);
             }
+
+            if (Buff.BuffType == Buff.BuffID.DarkBoss_Buff)
+            {
+                HP_MaxAmount -= 250;
+                DMG_Amount -= 25;
+                Armor_Amount -= 3;
+                GUI_Effects.PlayerEffect[10].SetActive(false);
+            }
         }
     }
 
@@ -698,6 +721,15 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
                 DMG_Amount += 25;
                 Armor_Amount += 3;
                 GUI_Effects.PlayerEffect[9].SetActive(true);
+            }
+
+            if(SomeBuff.BuffType == Buff.BuffID.DarkBoss_Buff)
+            {
+                HP_MaxAmount += 250;
+                HP_Amount += 250;
+                DMG_Amount += 25;
+                Armor_Amount += 3;
+                GUI_Effects.PlayerEffect[10].SetActive(true);
             }
             yield return new WaitForSeconds(SomeBuff.DeltaTime);
         }

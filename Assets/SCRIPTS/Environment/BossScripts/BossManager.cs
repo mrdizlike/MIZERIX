@@ -26,7 +26,7 @@ public class BossManager : MonoBehaviour
             {
                 LightBossSpawnTime = 0;
                 LightBossIsDead = false;
-                PhotonNetwork.Instantiate(LightBossPrefab.name, LightBossSpawnPoint.position, LightBossSpawnPoint.rotation);
+                PhotonNetwork.Instantiate(LightBossPrefab.name, LightBossSpawnPoint.position, LightBossSpawnPoint.rotation).name = "LightBoss";
             }
         }
 
@@ -38,7 +38,7 @@ public class BossManager : MonoBehaviour
             {
                 DarkBossSpawnTime = 0;
                 DarkBossIsDead = false;
-                PhotonNetwork.Instantiate(DarkBossPrefab.name, DarkBossSpawnPoint.position, DarkBossSpawnPoint.rotation);
+                PhotonNetwork.Instantiate(DarkBossPrefab.name, DarkBossSpawnPoint.position, DarkBossSpawnPoint.rotation).name = "DarkBoss";
             }
         }
     }

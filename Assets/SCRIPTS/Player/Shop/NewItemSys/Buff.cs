@@ -34,7 +34,8 @@ public class Buff : ScriptableObject
         MaskWithTubes_Buff = 25,
         ChipSight_Buff = 26,
         BrainMod_Buff = 27,
-        LightBoss_Buff = 28
+        LightBoss_Buff = 28,
+        DarkBoss_Buff = 29
     }
 
     public BuffID BuffType;

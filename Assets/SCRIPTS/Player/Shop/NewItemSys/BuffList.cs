@@ -31,4 +31,5 @@ public static class BuffList
     public static Buff ChipSightBuff = new Buff(Buff.BuffID.ChipSight_Buff, 0, 0, 0, false);
     public static Buff BrainModBuff = new Buff(Buff.BuffID.BrainMod_Buff, 0, 0, 0, false);
     public static Buff LightBossBuff = new Buff(Buff.BuffID.LightBoss_Buff, 150, 200, 0, false);
+    public static Buff DarkBossBuff = new Buff(Buff.BuffID.DarkBoss_Buff, 150, 200, 0, false);
 }

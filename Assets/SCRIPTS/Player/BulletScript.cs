@@ -54,6 +54,7 @@ public class BulletScript : MonoBehaviour
         DarkTeamDMG(other);
 
         LightBossDMG(other);
+        DarkBossDMG(other);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -209,6 +210,19 @@ public class BulletScript : MonoBehaviour
                 other.GetComponent<LightBossSys>().Player = Photon_Player.transform;
             }
             other.GetComponent<PhotonView>().RPC("LightBossTakeDamage", RpcTarget.All, ExplosionDamage);
+        }
+    }
+
+    private void DarkBossDMG(Collider other)
+    {
+        if(other.tag == "DarkBoss" && Photon_Player.GetComponent<Player_MAIN>().BossZone)
+        {
+            if(other.GetComponent<DarkBossSys>().Target == null)
+            {
+                other.GetComponent<DarkBossSys>().Target = Photon_Player.gameObject;
+            }
+            other.GetComponent<PhotonView>().RPC("DarkBossTakeDamage", RpcTarget.All, ExplosionDamage);
+            other.GetComponent<DarkBossSys>().InSafeTimer = 0;
         }
     }
 

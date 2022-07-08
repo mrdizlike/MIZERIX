@@ -9,6 +9,8 @@ public class ConnectionSystem : MonoBehaviourPunCallbacks, IPunObservable
 {
     public GameObject player;
 
+    public List<GameObject> PlayersObjects;
+
     public GameObject LightBaseProtection;
     public GameObject DarkBaseProtection;
 
