@@ -45,6 +45,10 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
     [Header("NetworkMisc")]
     public string PlayFab_Nickname;
 
+    [Header("Menu&Options")]
+    public GameObject MenuPanel;
+    public GameObject OptionsPanel;
+
     private void Start()
     {
         controller = GetComponent<CharacterController>(); //����� ����������
@@ -70,14 +74,22 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
         IsGrounded = controller.isGrounded;
         if (photonView.IsMine)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) && !InShop)
             {
-                CS.photonView.RPC("CountOfPlayer", RpcTarget.All, 1);
-                PhotonNetwork.Disconnect();
-                Application.Quit();
+                MenuPanel.SetActive(true);
+                GetComponent<Look>().enabled = false;
+                GetComponent<GunScript>().enabled = false;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                InShop = true;
             }
 
-            if (Input.GetKeyDown(KeyCode.Return) && !ChatOpen)
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                OptionsPanel.SetActive(false);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Return) && !ChatOpen && !InShop)
             {
                 ChatPanel.SetActive(true);
                 ChatContent.SetActive(true);
@@ -110,7 +122,7 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
             {
                 GetComponent<Look>().enabled = false;
                 GetComponent<GunScript>().enabled = false;
-            } else
+            } else if(!ChatPanel.activeSelf && !InShop)
             {
                 GetComponent<Look>().enabled = true;
                 GetComponent<GunScript>().enabled = true;
@@ -194,7 +206,7 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "DamageGround")
+        if(other.tag == "DamageGround" && !FindObjectOfType<BossManager>().DarkBossIsDead)
         {
             Hater = FindObjectOfType<DarkBossSys>().gameObject;
             GetComponent<PlayerSTAT>().Debuffs.Add(BuffList.PoisonDeBuff);
@@ -232,6 +244,23 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
         {
             BossZone = false;
         }
+    }
+
+    public void DisconnectButton()
+    {
+        CS.photonView.RPC("CountOfPlayer", RpcTarget.All, 1);
+        PhotonNetwork.Disconnect();
+        Application.Quit();
+    }
+
+    public void BackButton()
+    {
+        MenuPanel.SetActive(false);
+        GetComponent<Look>().enabled = true;
+        GetComponent<GunScript>().enabled = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        InShop = false;
     }
 
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

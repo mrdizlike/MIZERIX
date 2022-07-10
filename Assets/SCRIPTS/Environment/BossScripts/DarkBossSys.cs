@@ -197,32 +197,42 @@ public class DarkBossSys : MonoBehaviourPun, IPunObservable
         {
             if(Target.tag == "LightTeam")
             {
+                PlayerSTAT[] Players = FindObjectsOfType<PlayerSTAT>();
+
                 Target.GetComponent<Player_MAIN>().KF.AddNewKillListing("Light team", "Summoner");
-                foreach(GameObject PS in CS.PlayersObjects)
+                foreach (PlayerSTAT PS in Players)
                 {
-                    if(PS.tag == "LightTeam")
+                    if(PS.gameObject.tag == "LightTeam")
                     {
-                      PS.GetComponent<PlayerSTAT>().Debuffs.Add(BuffList.DarkBossBuff);
-                      PS.GetComponent<PlayerSTAT>().EnableDeBuff = true;
+                        PS.Debuffs.Add(BuffList.DarkBossBuff);
+                        PS.EnableDeBuff = true;
                     }
                 }
             }
             if (Target.tag == "DarkTeam")
             {
+                PlayerSTAT[] Players = FindObjectsOfType<PlayerSTAT>();
+
                 Target.GetComponent<Player_MAIN>().KF.AddNewKillListing("Dark team", "Summoner");
-                foreach(GameObject PS in CS.PlayersObjects)
+                foreach (PlayerSTAT PS in Players)
                 {
-                    if(PS.tag == "DarkTeam")
+                    if(PS.gameObject.tag == "DarkTeam")
                     {
-                      PS.GetComponent<PlayerSTAT>().Debuffs.Add(BuffList.DarkBossBuff);
-                      PS.GetComponent<PlayerSTAT>().EnableDeBuff = true;
+                        PS.Debuffs.Add(BuffList.DarkBossBuff);
+                        PS.EnableDeBuff = true;
                     }
                 }
             }
 
             BM.DarkBossIsDead = true;
             Header.SetActive(false);   
+            PhotonNetwork.Destroy(gameObject);
         }
+    }
+
+    public void Death()
+    {
+        photonView.RPC("NetworkSkill", RpcTarget.All, 4);
     }
 
     [PunRPC]

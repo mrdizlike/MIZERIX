@@ -101584,6 +101584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BM: {fileID: 0}
+  CS: {fileID: 0}
   HealthAmount: 5000
   HealthRegenTime: 0
   AttackSkill: 0

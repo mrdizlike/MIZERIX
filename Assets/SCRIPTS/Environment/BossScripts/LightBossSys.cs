@@ -220,19 +220,35 @@ public class LightBossSys : MonoBehaviourPun, IPunObservable
         {
             if(Player.tag == "LightTeam")
             {
+                PlayerSTAT[] Players = FindObjectsOfType<PlayerSTAT>();
+
                 Player.GetComponent<Player_MAIN>().KF.AddNewKillListing("Light team", "Purified");
-                FindObjectOfType<PlayerSTAT>().Debuffs.Add(BuffList.LightBossBuff);
-                FindObjectOfType<PlayerSTAT>().EnableDeBuff = true;
+                foreach (PlayerSTAT PS in Players)
+                {
+                    if(PS.gameObject.tag == "LightTeam")
+                    {
+                        PS.Debuffs.Add(BuffList.LightBossBuff);
+                        PS.EnableDeBuff = true;
+                    }
+                }
             }
             if (Player.tag == "DarkTeam")
             {
+                PlayerSTAT[] Players = FindObjectsOfType<PlayerSTAT>();
+
                 Player.GetComponent<Player_MAIN>().KF.AddNewKillListing("Dark team", "Purified");
-                FindObjectOfType<PlayerSTAT>().Debuffs.Add(BuffList.LightBossBuff);
-                FindObjectOfType<PlayerSTAT>().EnableDeBuff = true;
+                foreach (PlayerSTAT PS in Players)
+                {
+                    if(PS.gameObject.tag == "DarkTeam")
+                    {
+                        PS.Debuffs.Add(BuffList.LightBossBuff);
+                        PS.EnableDeBuff = true;
+                    }
+                }
             }
             BM.LightBossIsDead = true;
             Instantiate(DeadParticles);
-            Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
 
         if(Action_ID == 5)

@@ -116,7 +116,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
             DMG_Amount += item.DMG_Amount;
             DMGCrit_Amount += item.DMGCrit_Amount;
             GS.ReloadTime -= item.RealodTime;
-            GS.Spread -= item.Spread;
+            GS.Spread += item.Spread;
             GS.TimeBetweenShooting -= item.ShootRate;
             GS.MagazineSize += item.MagazineSize;
             PM.MovementSpeed += item.MovementSpeed;
@@ -139,7 +139,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
             DMG_Amount -= item.DMG_Amount;
             DMGCrit_Amount -= item.DMGCrit_Amount;
             GS.ReloadTime += item.RealodTime;
-            GS.Spread += item.Spread;
+            GS.Spread -= item.Spread;
             GS.TimeBetweenShooting += item.ShootRate;
             GS.MagazineSize -= item.MagazineSize;
             GS.BulletsInMagazine_Text.text = GS.MagazineSize.ToString();
@@ -486,7 +486,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void ReceiveDMG(float dmg)
     {
-        if (dmg - Armor_Amount > 0)
+        if (dmg - Armor_Amount > 0 && !PM.SafeZone)
         {
             HP_Amount -= dmg - Armor_Amount;
         }

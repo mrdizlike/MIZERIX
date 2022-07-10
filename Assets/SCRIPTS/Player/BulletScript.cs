@@ -44,7 +44,7 @@ public class BulletScript : MonoBehaviour
 
     private void Explode()
     {
-        PhotonNetwork.Instantiate(explosion.name, transform.position, Quaternion.identity);
+        Instantiate(explosion, transform.position, Quaternion.identity);
         PhotonNetwork.Destroy(gameObject);
     }
 

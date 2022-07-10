@@ -85,6 +85,11 @@ public class GunScript : MonoBehaviour
             GetComponent<PhotonView>().RPC("GunAnimationNetwork", RpcTarget.All, 0);
             GetComponent<PhotonView>().RPC("Shoot", RpcTarget.All);
         }
+
+        if(Spread > 0)
+        {
+            Spread = 0;
+        }
     }
 
     [PunRPC]

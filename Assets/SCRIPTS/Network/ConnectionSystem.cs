@@ -9,7 +9,7 @@ public class ConnectionSystem : MonoBehaviourPunCallbacks, IPunObservable
 {
     public GameObject player;
 
-    public List<GameObject> PlayersObjects;
+    GameObject PlayerObject;
 
     public GameObject LightBaseProtection;
     public GameObject DarkBaseProtection;
@@ -17,8 +17,11 @@ public class ConnectionSystem : MonoBehaviourPunCallbacks, IPunObservable
     public Transform[] LightSpawn;
     public Transform[] DarkSpawn;
     public int CountOfPlayers;
+    public float MinuteTimer;
+    public float SecondTimer;
 
     public Button Connect_Button;
+    public Text Timer_Text;
 
     public KillFeed KillFeed_Script;
     public GameObject ChatPanel;
@@ -27,6 +30,18 @@ public class ConnectionSystem : MonoBehaviourPunCallbacks, IPunObservable
     private void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
+    }
+
+    private void Update()
+    {
+        Timer_Text.text = string.Format("{0:00}:{1:00}", MinuteTimer, SecondTimer);
+        SecondTimer += Time.deltaTime;
+
+        if(SecondTimer >= 59)
+        {
+            SecondTimer = 0;
+            MinuteTimer++;
+        }
     }
 
     public override void OnConnectedToMaster()
@@ -51,11 +66,9 @@ public class ConnectionSystem : MonoBehaviourPunCallbacks, IPunObservable
         photonView.RPC("CountOfPlayer", RpcTarget.All, 0);
         SpawnPoints(CountOfPlayers);
     }
-
+    
     void SpawnPoints(int PlayerCount)
     {
-        GameObject PlayerObject;
-
         if (CountOfPlayers % 2 == 0)
         {
             PlayerObject = PhotonNetwork.Instantiate(player.name, LightSpawn[CountOfPlayers / 2 - 1].position, LightSpawn[CountOfPlayers / 2].rotation);
@@ -75,7 +88,6 @@ public class ConnectionSystem : MonoBehaviourPunCallbacks, IPunObservable
         PlayerObject.GetComponent<Player_MAIN>().ChatPanel = ChatPanel;
         PlayerObject.GetComponent<Player_MAIN>().ChatContent = ChatContent;
         PlayerObject.GetComponent<PlayerAnouncmentHUD>().TS = GetComponent<ThroneSystem>();
-        
     }
 
    
@@ -99,10 +111,14 @@ public class ConnectionSystem : MonoBehaviourPunCallbacks, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(CountOfPlayers);
+            stream.SendNext(MinuteTimer);
+            stream.SendNext(SecondTimer);
         }
         else if (stream.IsReading)
         {
             CountOfPlayers = (int)stream.ReceiveNext();
+            MinuteTimer = (float)stream.ReceiveNext();
+            SecondTimer = (float)stream.ReceiveNext();
         }
     }
 }
