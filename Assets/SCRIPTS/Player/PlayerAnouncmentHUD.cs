@@ -14,6 +14,12 @@ public class PlayerAnouncmentHUD : MonoBehaviour
     {
         if (GetComponent<PhotonView>().IsMine)
         {
+            if(TS.DisableMusic)
+            {
+                TS.DisableMusic = false;
+                GetComponent<Player_MAIN>().Calm = true;
+            }
+
             if (!TS.LightTeamCaptured && !TS.DarkTeamCaptured)
             {
                 DefendYourStructure.SetActive(false);
@@ -25,11 +31,21 @@ public class PlayerAnouncmentHUD : MonoBehaviour
                 if (TS.LightTeamCaptured)
                 {
                     AttackEnemyStructure.SetActive(true);
+                    if(TS.EnableMusic)
+                    {
+                        GetComponent<Player_MAIN>().AttackEnemyBase = true;
+                        TS.EnableMusic = false;
+                    }
                 }
 
                 if (TS.DarkTeamCaptured)
                 {
                     DefendYourStructure.SetActive(true);
+                    if(TS.EnableMusic)
+                    {
+                        GetComponent<Player_MAIN>().DefendBase = true;
+                        TS.EnableMusic = false;
+                    }
                 }
             }
 
@@ -38,11 +54,21 @@ public class PlayerAnouncmentHUD : MonoBehaviour
                 if (TS.LightTeamCaptured)
                 {
                     DefendYourStructure.SetActive(true);
+                    if(TS.EnableMusic)
+                    {
+                        GetComponent<Player_MAIN>().DefendBase = true;
+                        TS.EnableMusic = false;
+                    }
                 }
 
                 if (TS.DarkTeamCaptured)
                 {
                     AttackEnemyStructure.SetActive(true);
+                    if(TS.EnableMusic)
+                    {
+                        GetComponent<Player_MAIN>().AttackEnemyBase = true;
+                        TS.EnableMusic = false;
+                    }
                 }
             }
         }

@@ -53,7 +53,7 @@ public class MainPoint : MonoBehaviourPun, IPunObservable
 
                     if (AddTimePoint >= 1)
                     {
-                        if (DarkPointAmount == 0)
+                        if (DarkPointAmount == 1)
                         {
                             photonView.RPC("UpdatePointStatus", RpcTarget.All, 0);
                         }
@@ -65,11 +65,16 @@ public class MainPoint : MonoBehaviourPun, IPunObservable
                         AddTimePoint = 0;
                     }
 
-                    if (AddTimePoint == 0 && LightPointAmount == 26)
+                    if (AddTimePoint == 0 && LightPointAmount == 27)
                     {
                         photonView.RPC("UpdatePointStatus", RpcTarget.All, 4);
                     }
                 }
+
+                 if(DarkPointAmount < 0)
+                    {
+                        DarkPointAmount = 0;
+                    }
             }
 
             if (other.tag == "DarkTeam")
@@ -80,7 +85,7 @@ public class MainPoint : MonoBehaviourPun, IPunObservable
 
                     if (AddTimePoint >= 1)
                     {
-                        if (LightPointAmount == 0)
+                        if (LightPointAmount == 1)
                         {
                             photonView.RPC("UpdatePointStatus", RpcTarget.All, 2);
                         }
@@ -91,11 +96,16 @@ public class MainPoint : MonoBehaviourPun, IPunObservable
 
                         AddTimePoint = 0;
                     }
-                    if (AddTimePoint == 0 && DarkPointAmount == 26)
+                    if (AddTimePoint == 0 && DarkPointAmount == 27)
                     {
                         photonView.RPC("UpdatePointStatus", RpcTarget.All, 5);
                     }
                 }
+
+               if(LightPointAmount < 0)
+               {
+                  LightPointAmount = 0;
+               }
             }
         }
     }

@@ -393,6 +393,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
             GetComponent<Animator>().Play("Soldier_Die");
             Dead = true;
             DeathCount++;
+            PM.UnderAttack = false;
             if (PM.Hater != null && PM.Hater.name != "LightBoss" && PM.Hater.name != "DarkBoss")
             {
                 PM.KF.AddNewKillListing(PM.Hater.GetComponent<Player_MAIN>().PlayFab_Nickname, PM.PlayFab_Nickname);
@@ -489,6 +490,11 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
         if (dmg - Armor_Amount > 0 && !PM.SafeZone)
         {
             HP_Amount -= dmg - Armor_Amount;
+            if(!PM.MusicAux.isPlaying)
+            {
+              PM.UnderAttack = true;
+              PM.MusicTimer = 0;
+            }
         }
 
         if (Buffs.Contains(BuffList.EnergyHelmetBuff))

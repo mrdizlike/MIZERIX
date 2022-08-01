@@ -22,6 +22,9 @@ public class ThroneSystem : MonoBehaviourPunCallbacks, IPunObservable
     public bool DarkTeamCaptured;
     public bool LightTeamCaptured;
 
+    public bool EnableMusic;
+    public bool DisableMusic;
+
     public Image LightHPBar;
     public Image LightBacksideHPBar;
     public Image DarkHPBar;
@@ -36,24 +39,32 @@ public class ThroneSystem : MonoBehaviourPunCallbacks, IPunObservable
 
         if (photonView.IsMine)
         {
-            if(LightPoint.LightPointAmount == 26 && DarkPoint.LightPointAmount == 26)
+            if(LightPoint.LightPointAmount == 27 && DarkPoint.LightPointAmount == 27)
             {
-                LightTeamCaptured = true;
+                photonView.RPC("RPCThroneSys", RpcTarget.All, 4, 0f);
+                LightPoint.LightPointAmount = 28;
             } 
 
             if(LightPoint.LightPointAmount == 0 || DarkPoint.LightPointAmount == 0)
             {
                 LightTeamCaptured = false;
+                LightPoint.LightPointAmount = 1;
+                DarkPoint.LightPointAmount = 1;
+                DisableMusic = true;
             }
 
-            if (LightPoint.DarkPointAmount == 26 && DarkPoint.DarkPointAmount == 26)
+            if (LightPoint.DarkPointAmount == 27 && DarkPoint.DarkPointAmount == 27)
             {
-                DarkTeamCaptured = true;
+                photonView.RPC("RPCThroneSys", RpcTarget.All, 5, 0f);
+                LightPoint.DarkPointAmount = 28;
             }
 
             if (LightPoint.DarkPointAmount == 0 || DarkPoint.DarkPointAmount == 0)
             {
                 DarkTeamCaptured = false;
+                LightPoint.DarkPointAmount = 1;
+                DarkPoint.DarkPointAmount = 1;
+                DisableMusic = true;
             }
 
             if (LightTeamCaptured)
@@ -146,6 +157,18 @@ public class ThroneSystem : MonoBehaviourPunCallbacks, IPunObservable
         if (RPC_ID == 3)
         {
             DarkWinText.SetActive(true);
+        }
+
+        if(RPC_ID == 4)
+        {
+            EnableMusic = true;
+            LightTeamCaptured = true;
+        }
+
+        if(RPC_ID == 5)
+        {
+            EnableMusic = true;
+            DarkTeamCaptured = true;
         }
     }
 

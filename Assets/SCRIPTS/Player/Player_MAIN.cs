@@ -12,6 +12,7 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
     public CharacterController controller;
     private Zipline ZL;
     public AudioSource MainAux;
+    public AudioSource MusicAux;
     public AudioClip ZipLine_Sound;
     public AudioListener AUX;
     public KillFeed KF;
@@ -48,6 +49,18 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
     [Header("Menu&Options")]
     public GameObject MenuPanel;
     public GameObject OptionsPanel;
+
+    [Header("DynamicMusic")]
+    public AudioClip UnderAttackMusic;
+    public AudioClip AttackEnemyBaseMusic;
+    public AudioClip DefendBaseMusic;
+    public bool Calm;
+    public bool UnderAttack;
+    private bool UnderAttackFlag;
+    public bool AttackEnemyBase;
+    public bool DefendBase;
+
+    public float MusicTimer;
 
     private void Start()
     {
@@ -127,6 +140,8 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
                 GetComponent<Look>().enabled = true;
                 GetComponent<GunScript>().enabled = true;
             }
+
+            ChangeMusicState();
         }
     }
 
@@ -261,6 +276,66 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         InShop = false;
+    }
+
+    public void ChangeMusicState()
+    {
+
+        if(!UnderAttackFlag)
+        {
+            if(UnderAttack)
+            {
+                Calm = false;
+                UnderAttack = false;
+                UnderAttackFlag = true;
+                MusicAux.PlayOneShot(UnderAttackMusic);
+                MusicAux.volume = 0.2f;
+            }
+        }
+
+        if(AttackEnemyBase)
+        {
+            AttackEnemyBase = false;
+            UnderAttackFlag = false;
+            MusicTimer = 0;
+            MusicAux.Stop();
+            MusicAux.PlayOneShot(AttackEnemyBaseMusic);
+            MusicAux.volume = 0.5f;
+        }
+
+        if(DefendBase)
+        {
+            DefendBase = false;
+            UnderAttackFlag = false;
+            MusicTimer = 0;
+            MusicAux.Stop();
+            MusicAux.PlayOneShot(DefendBaseMusic);
+            MusicAux.volume = 0.5f;
+        }
+
+        if(UnderAttackFlag)
+        {
+            MusicTimer += Time.deltaTime;
+
+            if(MusicTimer >= 10)
+            {
+                UnderAttackFlag = false;
+                MusicTimer = 0;
+                Calm = true;
+                MusicAux.Stop();
+            }
+        }
+
+        if(Calm)
+        {
+            MusicAux.volume -= Time.deltaTime;
+
+            if(MusicAux.volume <= 0)
+            {
+                Calm = false;
+                MusicAux.Stop();
+            }
+        }
     }
 
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
