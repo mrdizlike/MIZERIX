@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Photon.Pun;
 
 public class Bazooka_Missle : MonoBehaviour
@@ -111,7 +108,7 @@ public class Bazooka_Missle : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.tag == "Ground")
+        if (collision.transform.tag == "Ground" || collision.transform.tag == "LightTeam" || collision.transform.tag == "DarkTeam")
         {
             GameObject Boom = PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
             Boom.GetComponent<BazookaBoom>().Photon_Player = Photon_Player;

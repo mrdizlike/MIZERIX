@@ -70,8 +70,11 @@ public class BazookaBoom : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        LightTeamDMG(other);
-        DarkTeamDMG(other);
+        if(GetComponent<PhotonView>().IsMine)
+        {
+            LightTeamDMG(other);
+            DarkTeamDMG(other);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
