@@ -118,6 +118,17 @@ public class SkillManager : MonoBehaviour
                 }
             }
         }
+
+        if(GetComponent<PlayerSTAT>().Dead)
+        {
+            for(int i = 0;i < Skills.Count;i++)
+            {
+                if(Skills[i].Skill_Level > 0)
+                {
+                    Skills[i].Lock_UI.SetActive(false);
+                }
+            }
+        }
     }
 
     void SoldierSkillSys()

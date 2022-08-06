@@ -35,10 +35,12 @@ public class Bazooka_Missle : MonoBehaviour
         if (Photon_Player.tag == "LightTeam" && other.tag == "DarkTeam")
         {
             other.GetComponent<PhotonView>().RPC("ReceiveDMG", RpcTarget.All, dmg);
-            other.GetComponent<Player_MAIN>().controller.Move(transform.TransformDirection(transform.up) * 10f * Time.deltaTime); //Подбрасывает вверх, нужно проверить в сетевой игре
+            other.GetComponent<Player_MAIN>().controller.Move(transform.TransformDirection(transform.up) * 10f * Time.deltaTime); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
             Photon_Player.GetComponent<GunScript>().DmgTextRelease(dmg);
+            GameObject Boom = PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
+            Boom.GetComponent<BazookaBoom>().Photon_Player = Photon_Player;
+            Boom.GetComponent<BazookaBoom>().dmg = dmg;
             PhotonNetwork.Destroy(gameObject);
-            PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
 
             if (other.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.TyranitBeltBuff) && !other.GetComponent<PlayerSTAT>().Debuffs.Contains(BuffList.TyranitBeltBuff))
             {
@@ -58,17 +60,19 @@ public class Bazooka_Missle : MonoBehaviour
         {
             other.GetComponent<ThroneDamage>().TakeDamageDark(dmg);
             Photon_Player.GetComponent<GunScript>().DmgTextRelease(dmg);
+            GameObject Boom = PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
+            Boom.GetComponent<BazookaBoom>().Photon_Player = Photon_Player;
+            Boom.GetComponent<BazookaBoom>().dmg = dmg;
             PhotonNetwork.Destroy(gameObject);
-            PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
         }
     }
 
     void DarkTeamDMG(Collider other)
     {
-        if (Photon_Player.tag == "DarkTeam" && other.tag == "LightTeam")
+        if (Photon_Player.tag == "DarkTeam" && other.tag == "DarkTeam")
         {
             other.GetComponent<PhotonView>().RPC("ReceiveDMG", RpcTarget.All, dmg);
-            other.GetComponent<Player_MAIN>().controller.Move(transform.TransformDirection(transform.up) * 10f * Time.deltaTime); //Подбрасывает вверх, нужно проверить в сетевой игре
+            other.GetComponent<Player_MAIN>().controller.Move(transform.TransformDirection(transform.up) * 10f * Time.deltaTime); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
             Photon_Player.GetComponent<GunScript>().DmgTextRelease(dmg);
             PhotonNetwork.Destroy(gameObject);
             PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
@@ -76,8 +80,10 @@ public class Bazooka_Missle : MonoBehaviour
             if (other.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.TyranitBeltBuff) && !other.GetComponent<PlayerSTAT>().Debuffs.Contains(BuffList.TyranitBeltBuff))
             {
                 other.GetComponent<ItemSysScript>().TyranitBeltSys();
+                GameObject Boom = PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
+                Boom.GetComponent<BazookaBoom>().Photon_Player = Photon_Player;
+                Boom.GetComponent<BazookaBoom>().dmg = dmg;
                 PhotonNetwork.Destroy(gameObject);
-                PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
             }
 
             if (!other.GetComponent<PlayerSTAT>().Dead && other.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.SpikeBuff))
@@ -90,8 +96,10 @@ public class Bazooka_Missle : MonoBehaviour
         {
             other.GetComponent<ThroneDamage>().TakeDamageLight(dmg);
             Photon_Player.GetComponent<GunScript>().DmgTextRelease(dmg);
+            GameObject Boom = PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
+            Boom.GetComponent<BazookaBoom>().Photon_Player = Photon_Player;
+            Boom.GetComponent<BazookaBoom>().dmg = dmg;
             PhotonNetwork.Destroy(gameObject);
-            PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
         }
     }
 
@@ -105,8 +113,10 @@ public class Bazooka_Missle : MonoBehaviour
     {
         if (collision.transform.tag == "Ground")
         {
+            GameObject Boom = PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
+            Boom.GetComponent<BazookaBoom>().Photon_Player = Photon_Player;
+            Boom.GetComponent<BazookaBoom>().dmg = dmg;
             PhotonNetwork.Destroy(gameObject);
-            PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
         }
     }
 }

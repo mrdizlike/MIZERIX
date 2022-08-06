@@ -58,6 +58,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
 
     [Header("UI_Elements")]
     public ItemUI GUI_Effects;
+    public GameObject DamagedScreen;
     public Image HP_Bar;
     public Image HP_Backward_Bar;
     public Image EXP_Bar;
@@ -76,6 +77,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
 
     float lerpTimer;
     public float chipSpeed;
+    private float DamageScreenTimer;
 
     void Start()
     {
@@ -101,7 +103,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
 
         if (Input.GetKeyDown(KeyCode.U))
         {
-            ReceiveDMG(0);
+            ReceiveDMG(10);
         }
     }
 
@@ -324,6 +326,16 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
                 }
             }
         }
+
+        if(DamagedScreen.activeSelf)
+        {
+            DamageScreenTimer += Time.deltaTime;
+            if(DamageScreenTimer > 1f)
+            {
+                DamagedScreen.SetActive(false);
+                DamageScreenTimer = 0;
+            }
+        }
     }
 
     void UpdateHealthBarUI()
@@ -490,10 +502,11 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
         if (dmg - Armor_Amount > 0 && !PM.SafeZone)
         {
             HP_Amount -= dmg - Armor_Amount;
+            PM.MusicTimer = 0;
+            DamagedScreen.SetActive(true);
             if(!PM.MusicAux.isPlaying)
             {
               PM.UnderAttack = true;
-              PM.MusicTimer = 0;
             }
         }
 

@@ -15,14 +15,13 @@ public class ZiplaneActivator : MonoBehaviour
     {
         if(other.tag == "LightTeam" || other.tag == "DarkTeam")
         {
-            if (Input.GetKey(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 ziplineScript.endPOS = EndZone;
 
                 P_M.CanZIP = true;
+                P_M.MainAux.PlayOneShot(P_M.ZipLine_Sound);
             }
-
-            Debug.Log("I'am here!");
 
             ziplineScript = other.GetComponent<Zipline>();
             P_M = other.GetComponent<Player_MAIN>();
@@ -39,7 +38,5 @@ public class ZiplaneActivator : MonoBehaviour
             P_M.CanZIP = false;
             ziplineScript.TextForUse.SetActive(false);
         }
-
-        Debug.Log("I'am exit!");
     }
 }

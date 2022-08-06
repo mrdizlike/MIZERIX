@@ -167,11 +167,10 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
         }
 
 
-        if (Input.GetKeyDown(KeyCode.F) && CanZIP && photonView.IsMine)
+        if (CanZIP && photonView.IsMine)
         {
             GetComponent<Zipline>().StartCoroutine(GetComponent<Zipline>().StartZipLine());
             CanZIP = false;
-            MainAux.PlayOneShot(ZipLine_Sound);
         }
     }
 

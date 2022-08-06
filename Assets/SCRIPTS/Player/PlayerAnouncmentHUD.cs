@@ -31,6 +31,7 @@ public class PlayerAnouncmentHUD : MonoBehaviour
                 if (TS.LightTeamCaptured)
                 {
                     AttackEnemyStructure.SetActive(true);
+                    DefendYourStructure.SetActive(false);
                     if(TS.EnableMusic)
                     {
                         GetComponent<Player_MAIN>().AttackEnemyBase = true;
@@ -41,6 +42,7 @@ public class PlayerAnouncmentHUD : MonoBehaviour
                 if (TS.DarkTeamCaptured)
                 {
                     DefendYourStructure.SetActive(true);
+                    AttackEnemyStructure.SetActive(false);
                     if(TS.EnableMusic)
                     {
                         GetComponent<Player_MAIN>().DefendBase = true;
@@ -54,6 +56,7 @@ public class PlayerAnouncmentHUD : MonoBehaviour
                 if (TS.LightTeamCaptured)
                 {
                     DefendYourStructure.SetActive(true);
+                    AttackEnemyStructure.SetActive(false);
                     if(TS.EnableMusic)
                     {
                         GetComponent<Player_MAIN>().DefendBase = true;
@@ -64,6 +67,7 @@ public class PlayerAnouncmentHUD : MonoBehaviour
                 if (TS.DarkTeamCaptured)
                 {
                     AttackEnemyStructure.SetActive(true);
+                    DefendYourStructure.SetActive(false);
                     if(TS.EnableMusic)
                     {
                         GetComponent<Player_MAIN>().AttackEnemyBase = true;

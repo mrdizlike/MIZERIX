@@ -54,8 +54,8 @@ public class T_Skill : MonoBehaviourPun, IPunObservable
         photonView.RPC("NetworkAnimation", RpcTarget.All, 0);
         photonView.RPC("BazookaMissleRPC", RpcTarget.All);
 
+        SM.Skills[2].Skill_Effect.SetActive(true);
         SM.Skills[2].Skill_Effect.GetComponent<ParticleSystem>().Play();
-        SM.Skills[2].Skill_Effect.SetActive(true); //Чтобы частицы не активировались сразу после активации базуки
         BazookaIsReady = false;
         SM.Skills[2].Skill_Active = false;
         GS.blockUsing = false;

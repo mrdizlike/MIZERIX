@@ -14,6 +14,9 @@ GameObject:
   - component: {fileID: 114324878773532104}
   - component: {fileID: -1581302552479708302}
   - component: {fileID: 415774239565817299}
+  - component: {fileID: 2169771324596410343}
+  - component: {fileID: 8369236455251349764}
+  - component: {fileID: 4392211936395616357}
   m_Layer: 0
   m_Name: BazookaSmoke
   m_TagString: Untagged
@@ -4990,6 +4993,46 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2169771324596410343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134129239631916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3f0d9c74ab486244a80b7ca8a8557b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Photon_Player: {fileID: 0}
+  dmg: 25
+--- !u!65 &8369236455251349764
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134129239631916}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.143392, y: 5.206648, z: 5.543742}
+  m_Center: {x: -0.16795255, y: 0.5062461, z: -0.09270072}
+--- !u!65 &4392211936395616357
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134129239631916}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1143295807935202
 GameObject:
   m_ObjectHideFlags: 0
