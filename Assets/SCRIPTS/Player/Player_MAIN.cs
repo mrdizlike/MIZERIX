@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using PlayFab;
+using PlayFab.ClientModels;
 using Photon.Pun;
 public class Player_MAIN : MonoBehaviourPun, IPunObservable
 {
@@ -44,6 +44,7 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
     public Vector3 movementVector;
 
     [Header("NetworkMisc")]
+    public Text PlayerNickname;
     public string PlayFab_Nickname;
 
     [Header("Menu&Options")]
@@ -79,6 +80,7 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
             GetComponent<Look>().GunCam.GetComponent<Camera>().enabled = true;
             GetComponent<InputManager>().enabled = true;
             AUX.enabled = true;
+            photonView.RPC("TakeUsername", RpcTarget.All, FindObjectOfType<ChatManager>().PlayerNickname);
         }
     }
 
@@ -336,6 +338,35 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
             }
         }
     }
+
+    [PunRPC]
+    private void TakeUsername(string username)
+    {
+        PlayFab_Nickname = username;
+        PlayerNickname.text = username;
+    }
+
+    // private void GetAccountInfo()
+    // {
+    //     var request = new GetAccountInfoRequest{
+            
+    //     };
+    //     PlayFabClientAPI.GetAccountInfo(request, TakePlayFabUsername, OnError);
+    // }
+
+    // private void TakePlayFabUsername(GetAccountInfoResult result)
+    // {
+    //     PlayFab_Nickname = result.AccountInfo.Username;
+    //     if(PV.IsMine)
+    //     {
+    //         PlayerNickname.text = PlayFab_Nickname;
+    //     }
+    // }
+
+    // private void OnError(PlayFabError error)
+    // {
+    //     Debug.Log(error.GenerateErrorReport());
+    // }
 
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

@@ -1,9 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using PlayFab;
+using PlayFab.ClientModels;
 
 public class ChatManager : MonoBehaviour
 {
@@ -15,12 +16,13 @@ public class ChatManager : MonoBehaviour
     private List<string> messages = new List<string>();
     private float buildDelay = 0f;
     private int maxMessages = 14;
+    public string PlayerNickname;
 
     private void Start()
     {
         Photon = GetComponent<PhotonView>();
 
-        PhotonNetwork.NickName = "Player"; //Заменить на ник из PlayFab
+        GetAccountInfo();
     }
 
     private void Update()
@@ -71,7 +73,7 @@ public class ChatManager : MonoBehaviour
 
     public void SendChat(string msg)
     {
-        string NewMessage = PhotonNetwork.NickName + ": " + msg;
+        string NewMessage = PlayerNickname + ": " + msg;
         CS.ChatPanel.SetActive(false);
         ChatContent.gameObject.SetActive(true);
         Cursor.lockState = CursorLockMode.Locked;
@@ -93,6 +95,24 @@ public class ChatManager : MonoBehaviour
         SendChat(ChatInput.text);
         ChatInput.ActivateInputField();
         ChatInput.text = "";
+    }
+
+    private void GetAccountInfo()
+    {
+        var request = new GetAccountInfoRequest{
+            
+        };
+        PlayFabClientAPI.GetAccountInfo(request, TakePlayFabUsername, OnError);
+    }
+
+    private void TakePlayFabUsername(GetAccountInfoResult result)
+    {
+        PlayerNickname = result.AccountInfo.Username;
+    }
+
+    private void OnError(PlayFabError error)
+    {
+        Debug.Log(error.GenerateErrorReport());
     }
 
     void BuildChatContents()
