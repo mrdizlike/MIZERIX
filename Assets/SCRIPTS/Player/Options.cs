@@ -34,7 +34,8 @@ public class Options : MonoBehaviour
 
     public void ChangeMasterVolume(float value)
     {
-        Mixer.SetFloat("MainAudio", Mathf.Log10(value) * 20);
+        Mixer.SetFloat("MasterVolume", Mathf.Log10(value) * 20);
+        PlayerPrefs.SetFloat("MasterVolume", Mathf.Log10(value) * 20);
     }
 
     public void ChangeSensitivity(float value)
