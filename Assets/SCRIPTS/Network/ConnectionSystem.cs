@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
@@ -27,11 +25,6 @@ public class ConnectionSystem : MonoBehaviourPunCallbacks, IPunObservable
     public GameObject ChatPanel;
     public GameObject ChatContent;
 
-    private void Start()
-    {
-        PhotonNetwork.ConnectUsingSettings();
-    }
-
     private void Update()
     {
         Timer_Text.text = string.Format("{0:00}:{1:00}", MinuteTimer, SecondTimer);
@@ -44,21 +37,16 @@ public class ConnectionSystem : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    public override void OnConnectedToMaster()
-    {
-        Debug.Log("Connected!");
-        PhotonNetwork.AutomaticallySyncScene = true;
-
-        RoomOptions ro = new RoomOptions { MaxPlayers = 10, IsOpen = true, IsVisible = true };
-
-        PhotonNetwork.JoinOrCreateRoom("NORMAL_5x5", ro, TypedLobby.Default);
-    }
-
     public override void OnJoinedRoom()
     {
         Debug.Log("U in game!");
         Connect_Button.interactable = true;
         base.OnJoinedRoom();
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        PhotonNetwork.LoadLevel(1);
     }
 
     public void Spawn()

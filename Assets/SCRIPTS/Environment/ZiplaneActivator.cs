@@ -6,22 +6,27 @@ using UnityEngine.UI;
 public class ZiplaneActivator : MonoBehaviour
 {
     public Transform EndZone;
+    public bool ZiplaneActive;
     private Zipline ziplineScript;
     private InputManager IM;
     private Player_MAIN P_M;
 
-    // Start is called before the first frame update
-    public void OnTriggerStay(Collider other)
+    void Update()
     {
-        if(other.tag == "LightTeam" || other.tag == "DarkTeam")
-        {
-            if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && ZiplaneActive)
             {
                 ziplineScript.endPOS = EndZone;
 
                 P_M.CanZIP = true;
                 P_M.MainAux.PlayOneShot(P_M.ZipLine_Sound);
             }
+    }
+
+    public void OnTriggerStay(Collider other)
+    {
+        if(other.tag == "LightTeam" || other.tag == "DarkTeam")
+        {
+            ZiplaneActive = true;
 
             ziplineScript = other.GetComponent<Zipline>();
             P_M = other.GetComponent<Player_MAIN>();
@@ -35,6 +40,7 @@ public class ZiplaneActivator : MonoBehaviour
     {
         if (other.tag == "LightTeam" || other.tag == "DarkTeam")
         {
+            ZiplaneActive = false;
             P_M.CanZIP = false;
             ziplineScript.TextForUse.SetActive(false);
         }

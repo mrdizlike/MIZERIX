@@ -15,9 +15,9 @@ public class Options : MonoBehaviour
 
     void Start()
     {
-        float musicVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        float musicVolume = PlayerPrefs.GetFloat("MasterVolume");
         Sound_Slider.value = musicVolume;
-        Mixer.SetFloat("MasterVolume", Mathf.Log10(musicVolume) * 20);
+        Mixer.SetFloat("MasterVolume", musicVolume);
 
         float sensetivityValue = PlayerPrefs.GetFloat("Sensitivity", MouseSensetivity_Slider.value);
         MouseSensetivity_Slider.value = sensetivityValue;
@@ -34,8 +34,8 @@ public class Options : MonoBehaviour
 
     public void ChangeMasterVolume(float value)
     {
-        Mixer.SetFloat("MasterVolume", Mathf.Log10(value) * 20);
-        PlayerPrefs.SetFloat("MasterVolume", Mathf.Log10(value) * 20);
+        Mixer.SetFloat("MasterVolume", value);
+        PlayerPrefs.SetFloat("MasterVolume", value);
     }
 
     public void ChangeSensitivity(float value)
