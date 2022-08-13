@@ -10,10 +10,10 @@ public class ProfileFeatures : MonoBehaviour
 
     [Header("MainUIHandlers")]
     public Text UserName;
+    public Text PlayerID;
     public Text ProfileLevel_Text;
     public GameObject ProfileStat_One;
     public GameObject ProfileStat_Two;
-    public GameObject FriendsList;
     public GameObject MatchList;
     public Image MenuUserAvatar;
     public Image ProfileUserAvatar;
@@ -40,13 +40,13 @@ public class ProfileFeatures : MonoBehaviour
     public void ChangeAvatar(int AvatarID)
     {
         CurrentAvatarID = AvatarID;
-        GetPlayerAvatar(AvatarID);
+        GetPlayerAvatar(ProfileUserAvatar, AvatarID);
         NT.SaveAccountData();
     }
 
-    public void GetPlayerAvatar(int AvatarID)
+    public void GetPlayerAvatar(Image AvatarHolder, int AvatarID)
     {
-        ProfileUserAvatar.sprite = PlayerAvatar[AvatarID];
+        AvatarHolder.sprite = PlayerAvatar[AvatarID];
         MenuUserAvatar.sprite = ProfileUserAvatar.sprite;
     }
 
