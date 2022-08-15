@@ -59,7 +59,7 @@ public class Network : MonoBehaviourPunCallbacks, IPunObservable
             SearchTimerText.text = string.Format("{0:00}:{1:00}", Minutes, Seconds);
             Seconds += Time.deltaTime;
 
-            if(Seconds >= 60)
+            if(Seconds >= 59)
             {
                 Seconds = 0;
                 Minutes += 1;
@@ -99,7 +99,7 @@ public class Network : MonoBehaviourPunCallbacks, IPunObservable
 
             if(PhotonNetwork.InRoom && photonView.IsMine)
             {
-                  if(AcceptCount == 3 && IsSearching) //Все игроки приняли матч, начинается загрузка карты
+                  if(AcceptCount == 1 && IsSearching) //Все игроки приняли матч, начинается загрузка карты
                   {
                        IsSearching = false;
                        photonView.RPC("LoadMap", RpcTarget.All);
@@ -331,6 +331,7 @@ public class Network : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         PlayFabClientAPI.AddFriend(request, result => {
+            GetFriends();
             Debug.Log("Friend added");
         }, OnError);
     }

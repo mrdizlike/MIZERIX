@@ -354,27 +354,30 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
 
     void LevelSys()
     {
-        EXP_Bar.fillAmount = EXP_Amount / MaxEXP;
-        LVL_text.text = Level_Amount.ToString();
-        LVL_Player_Text.text = Level_Amount.ToString();
-
-        if (EXP_Amount >= MaxEXP)
+        if(Level_Amount < 11)
         {
-            NextLevel = true;
-            EXP_Amount = 0;
-            MaxEXP += 250;
-        }
+            EXP_Bar.fillAmount = EXP_Amount / MaxEXP;
+            LVL_text.text = Level_Amount.ToString();
+            LVL_Player_Text.text = Level_Amount.ToString();
 
-        if (NextLevel)
-        {
-            Level_Amount += 1;
-            TokenCount++;
-            SwapTokenCount += 2;
-            IL.UpdateItems();
-            IL.ItemChance();
-            GetComponent<SkillManager>().UpgradeToken++;
-            photonView.RPC("ReceiveEXP", RpcTarget.All, 1);
-            NextLevel = false;
+            if (EXP_Amount >= MaxEXP)
+            {
+                NextLevel = true;
+                EXP_Amount = 0;
+                MaxEXP += 250;
+            }
+
+            if (NextLevel)
+            {
+               Level_Amount += 1;
+               TokenCount++;
+               SwapTokenCount += 2;
+               IL.UpdateItems();
+               IL.ItemChance();
+               GetComponent<SkillManager>().UpgradeToken++;
+               photonView.RPC("ReceiveEXP", RpcTarget.All, 1);
+               NextLevel = false;
+            }
         }
     }
 
