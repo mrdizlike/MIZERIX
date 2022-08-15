@@ -15,7 +15,24 @@ public class Network : MonoBehaviourPunCallbacks, IPunObservable
     public Text FriendSearch;
     public GameObject FriendPrefab;
     public ProfileFeatures PF;
+    public PlayerFabStat PFS;
     public Text PlayerUsername;
+
+    [Header("SearchGameMisc")]
+    public bool IsSearching;
+    public float Seconds;
+    public float Minutes;
+    public float ReadyTimer;
+    public int AcceptCount;
+
+    public Text SearchTimerText;
+    public Image TimeToAccept;
+    
+    public GameObject GameReadyPanel;
+    public GameObject GameSearchButton;
+    public GameObject GameSearchCancelButton;
+    public GameObject GameAcceptButton;
+    public GameObject[] PlayersReady;
 
     [SerializeField]
     Transform FriendScrollView;
@@ -35,6 +52,70 @@ public class Network : MonoBehaviourPunCallbacks, IPunObservable
         GetFriends(); //Получаем PLayFab друзей из списка друзей игрока
     }
 
+    void Update()
+    {
+        if(IsSearching)
+        {
+            SearchTimerText.text = string.Format("{0:00}:{1:00}", Minutes, Seconds);
+            Seconds += Time.deltaTime;
+
+            if(Seconds >= 60)
+            {
+                Seconds = 0;
+                Minutes += 1;
+            }
+        }
+
+        if(GameReadyPanel.activeSelf)
+        {
+            ReadyTimer += Time.deltaTime;
+
+            TimeToAccept.fillAmount -= 1 / 10f * Time.deltaTime;
+
+            if(ReadyTimer >= 10)
+            {
+                foreach(GameObject PlayerIcon in PlayersReady)
+                {
+                  if(PlayerIcon.activeSelf)
+                  {
+                        PlayerIcon.SetActive(false);
+                  }
+                }
+
+                Seconds = 0;
+                Minutes = 0;
+                ReadyTimer = 0;
+                AcceptCount = 0;
+                IsSearching = false;
+                TimeToAccept.fillAmount = 1;
+                GameSearchCancelButton.SetActive(false);
+                GameSearchButton.SetActive(true);
+                GameAcceptButton.GetComponent<Button>().interactable = true;
+                GameSearchCancelButton.GetComponent<Button>().interactable = true;
+                PhotonNetwork.LeaveRoom();
+                Debug.Log("Leave from room");
+                GameReadyPanel.SetActive(false);
+            }
+
+            if(PhotonNetwork.InRoom && photonView.IsMine)
+            {
+                  if(AcceptCount == 3 && IsSearching) //Все игроки приняли матч, начинается загрузка карты
+                  {
+                       IsSearching = false;
+                       photonView.RPC("LoadMap", RpcTarget.All);
+                  }
+            }
+        }
+    }
+
+    public void IsSearchingButton(bool search)
+    {
+        Seconds = 0;
+        Minutes = 0;
+        IsSearching = search;
+    }
+
+    #region ConnectionAndSearch
     public override void OnConnectedToMaster() //Присоединяемся к серверам Photon
     {
         Debug.Log("Connected!");
@@ -45,12 +126,64 @@ public class Network : MonoBehaviourPunCallbacks, IPunObservable
 
     public void CreateMatch() //Создаем игру
     {
-        RoomOptions ro = new RoomOptions { MaxPlayers = 10, IsOpen = true, IsVisible = true }; //Настройки комнаты
+        RoomOptions ro = new RoomOptions { 
+            MaxPlayers = 10,
+            IsOpen = true,
+            IsVisible = true
+            }; //Настройки комнаты
 
         PhotonNetwork.JoinOrCreateRoom("NORMAL_5x5", ro, TypedLobby.Default); //Либо создаем, либо присоединяемся к существующей комнате
-
-        PhotonNetwork.LoadLevel(2); //Загружаем карту
+        Debug.Log("Room has been created");
     }
+
+    public void StopSearchMatch()
+    {
+        PhotonNetwork.LeaveRoom();
+        Debug.Log("Search stopped");
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        if(PhotonNetwork.CurrentRoom.PlayerCount == 2 && PhotonNetwork.IsMasterClient) //Ждем соглашения всех игроков и запускаем карту
+        {
+            Debug.Log("All players in room! Waiting accepting");
+            photonView.RPC("EnableReadyPanel", RpcTarget.All);
+        }
+    }
+
+    public void AcceptMatch()
+    {
+        photonView.RPC("AcceptMatchRPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void LoadMap()
+    {
+        PhotonNetwork.LoadLevel(2);
+    }
+
+    [PunRPC]
+    void EnableReadyPanel()
+    {
+        GameReadyPanel.SetActive(true);
+        GameSearchCancelButton.GetComponent<Button>().interactable = false;
+    }
+
+    [PunRPC]
+    void AcceptMatchRPC()
+    {
+        AcceptCount += 1;
+        
+        foreach(GameObject PlayerIcon in PlayersReady)
+        {
+            if(!PlayerIcon.activeSelf)
+            {
+                PlayerIcon.SetActive(true);
+                break;
+            }
+        }
+    }
+    #endregion
 
     private void GetAccountInfo()
     {
@@ -66,12 +199,20 @@ public class Network : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     public void SaveAccountData()
-    {
+    {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
         var request = new UpdateUserDataRequest{
+            Permission = UserDataPermission.Public,
             Data = new Dictionary<string, string>{
                 {"Avatar", PF.CurrentAvatarID.ToString()},
                 {"NewRank", PF.CurrentRankID.ToString()},
-                {"ProgressNewRank", PF.CurrentRankProgress.ToString()}
+                {"ProgressNewRank", PF.CurrentRankProgress.ToString()},
+                {"WinStat", PFS.WinStat.ToString()},
+                {"DefeatStat", PFS.DefeatStat.ToString()},
+                {"KillsStat", PFS.KillStat.ToString()},
+                {"DeathStat", PFS.DeathStat.ToString()},
+                {"ItemsStat", PFS.ItemsStat.ToString()},
+                {"StatBlockOneID", PFS.StatBlockOneID.ToString()},
+                {"StatBlockTwoID", PFS.StatBlockTwoID.ToString()}
             }
         };
         PlayFabClientAPI.UpdateUserData(request, OnDataSend, OnError);
@@ -92,6 +233,15 @@ public class Network : MonoBehaviourPunCallbacks, IPunObservable
              PF.CurrentRankProgress = float.Parse(result.Data["ProgressNewRank"].Value);
              PF.GetPlayerAvatar(PF.ProfileUserAvatar, int.Parse(result.Data["Avatar"].Value));
              PF.GetPlayerNewRank(int.Parse(result.Data["NewRank"].Value));
+             PFS.WinStat = int.Parse(result.Data["WinStat"].Value);
+             PFS.DefeatStat = int.Parse(result.Data["DefeatStat"].Value);
+             PFS.KillStat = int.Parse(result.Data["KillsStat"].Value);
+             PFS.DeathStat = int.Parse(result.Data["DeathStat"].Value);
+             PFS.ItemsStat = int.Parse(result.Data["ItemsStat"].Value);
+             PFS.StatBlockOneID = int.Parse(result.Data["StatBlockOneID"].Value);
+             PFS.StatBlockTwoID = int.Parse(result.Data["StatBlockTwoID"].Value);
+             PFS.ChangeStatBlockOne(int.Parse(result.Data["StatBlockOneID"].Value));
+             PFS.ChangeStatBlockTwo(int.Parse(result.Data["StatBlockTwoID"].Value));
         } else //Если игрок создал аккаунт, то его данные сохраняются под нулевым значением для дальнейшей работы.
         {
             SaveAccountData();
@@ -199,12 +349,12 @@ public class Network : MonoBehaviourPunCallbacks, IPunObservable
     {
         FriendSearch.text = IdIn;
     }
-    #endregion
 
     public void SubmitFriendRequest()
     {
         AddFriend(FriendIdType.PlayFabId, FriendSearch.text);
     }
+    #endregion
 
     private void OnError(PlayFabError error)
     {

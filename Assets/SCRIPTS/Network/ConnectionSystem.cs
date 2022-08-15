@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
@@ -25,6 +26,10 @@ public class ConnectionSystem : MonoBehaviourPunCallbacks, IPunObservable
     public GameObject ChatPanel;
     public GameObject ChatContent;
 
+    void Start()
+    {
+        Connect_Button.interactable = true; //Тут потом будет таймер до начала матча и бла бла бла
+    }
     private void Update()
     {
         Timer_Text.text = string.Format("{0:00}:{1:00}", MinuteTimer, SecondTimer);
@@ -33,20 +38,13 @@ public class ConnectionSystem : MonoBehaviourPunCallbacks, IPunObservable
         if(SecondTimer >= 59)
         {
             SecondTimer = 0;
-            MinuteTimer++;
+            MinuteTimer += 1;
         }
-    }
-
-    public override void OnJoinedRoom()
-    {
-        Debug.Log("U in game!");
-        Connect_Button.interactable = true;
-        base.OnJoinedRoom();
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        PhotonNetwork.LoadLevel(1);
+        SceneManager.LoadScene("Menu", LoadSceneMode.Single);
     }
 
     public void Spawn()
