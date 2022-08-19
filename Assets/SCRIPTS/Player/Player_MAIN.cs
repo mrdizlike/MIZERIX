@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayFab;
@@ -172,7 +174,6 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
         if (CanZIP && photonView.IsMine)
         {
             GetComponent<Zipline>().StartCoroutine(GetComponent<Zipline>().StartZipLine());
-            CanZIP = false;
         }
     }
 
@@ -266,7 +267,6 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
     {
         CS.photonView.RPC("CountOfPlayer", RpcTarget.All, 1);
         PhotonNetwork.Disconnect();
-        Application.Quit();
     }
 
     public void BackButton()
@@ -345,28 +345,6 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
         PlayFab_Nickname = username;
         PlayerNickname.text = username;
     }
-
-    // private void GetAccountInfo()
-    // {
-    //     var request = new GetAccountInfoRequest{
-            
-    //     };
-    //     PlayFabClientAPI.GetAccountInfo(request, TakePlayFabUsername, OnError);
-    // }
-
-    // private void TakePlayFabUsername(GetAccountInfoResult result)
-    // {
-    //     PlayFab_Nickname = result.AccountInfo.Username;
-    //     if(PV.IsMine)
-    //     {
-    //         PlayerNickname.text = PlayFab_Nickname;
-    //     }
-    // }
-
-    // private void OnError(PlayFabError error)
-    // {
-    //     Debug.Log(error.GenerateErrorReport());
-    // }
 
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

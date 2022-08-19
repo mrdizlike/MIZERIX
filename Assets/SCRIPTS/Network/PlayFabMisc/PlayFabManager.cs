@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using PlayFab;
 using PlayFab.ClientModels;
+using System.Collections;
+using System.Collections.Generic;
 
 public class PlayFabManager : MonoBehaviour
 {

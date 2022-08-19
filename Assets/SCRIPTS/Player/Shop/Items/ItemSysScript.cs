@@ -208,7 +208,7 @@ public class ItemSysScript : MonoBehaviourPun, IPunObservable
     {
        if (Input.GetKeyDown(KeyCode.R) && PS.Buffs.Contains(BuffList.EnergyHandsBuff) && GS.reloading)
        {
-            photonView.RPC("ItemEffect", RpcTarget.All, 116, false); //выполняет тоже самое что и 116 предмет
+            photonView.RPC("ItemEffect", RpcTarget.All, 116, false); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ 116 пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
        }
     }
 

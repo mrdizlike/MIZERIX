@@ -21,49 +21,49 @@ public class ItemList : MonoBehaviour
     public Item ArmorPlate;
     public Item BootsOfStrong;
     public Item Helmet;
-    public ActiveItem Shield; //Активный предмет
-    public ActiveItem CronerChain; //активный предмет?
-    public Item EnergyHelmet; //Бафф?
+    public ActiveItem Shield; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    public ActiveItem CronerChain; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ?
+    public Item EnergyHelmet; //пїЅпїЅпїЅпїЅ?
     public Item MaskWithTubes; 
-    public ActiveItem PlanB; //Активный предмет
+    public ActiveItem PlanB; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     public Item Cevlar;
-    public Item Spike; //БАФФ?
-    public Item SpikeHelmet; //БАФФ?
-    public Item InfectedCevlar; //БАФФ?
-    public ActiveItem TyranitBelt; //активный предмет?
+    public Item Spike; //пїЅпїЅпїЅпїЅ?
+    public Item SpikeHelmet; //пїЅпїЅпїЅпїЅ?
+    public Item InfectedCevlar; //пїЅпїЅпїЅпїЅ?
+    public ActiveItem TyranitBelt; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ?
     public Item Barrel;
     public Item Butt;
     public Item ChipStable;
-    public Item ElectricCrown; //Бафф?
+    public Item ElectricCrown; //пїЅпїЅпїЅпїЅ?
     public Item Handle;
-    public ActiveItem KnifeOfJustice; //Активный предмет
+    public ActiveItem KnifeOfJustice; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     public Item Magazines;
     public Item Overlap;
     public Item StrangeCard;
-    public Item AcidBullet; //Бафф
-    public Item ChipSight; //Бафф?
+    public Item AcidBullet; //пїЅпїЅпїЅпїЅ
+    public Item ChipSight; //пїЅпїЅпїЅпїЅ?
     public Item DarkNeedle;
-    public Item JawMod; //Бафф?
+    public Item JawMod; //пїЅпїЅпїЅпїЅ?
     public ActiveItem SectantCloak;
-    public Item ThermalSensor; //Бафф?
+    public Item ThermalSensor; //пїЅпїЅпїЅпїЅ?
     public Item UpgradedMagazines;
-    public Item BarrelMark2; //Бафф?
-    public Item EnergyHand; //Бафф?
-    public ActiveItem Mirror; //Активный предмет
+    public Item BarrelMark2; //пїЅпїЅпїЅпїЅ?
+    public Item EnergyHand; //пїЅпїЅпїЅпїЅ?
+    public ActiveItem Mirror; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     public Item ProBelt;
     public Item SpeedyBoots;
-    public ActiveItem EritondEye; //Активный предмет
+    public ActiveItem EritondEye; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     public Item MIZEmblem;
-    public ActiveItem EnergyDrink; //Активный предмет
+    public ActiveItem EnergyDrink; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     public Item GemOfLife;
     public Item GloryPoster;
-    public Item InfectedSkull; //Бафф?
+    public Item InfectedSkull; //пїЅпїЅпїЅпїЅ?
     public Item SecretEmblem;
-    public ActiveItem HealthRing; //Активный предмет
+    public ActiveItem HealthRing; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     public Item Helper;
     public Item ProBoot;
-    public Item SectantBook; //Бафф?
-    public Item BrainMod; //Бафф?
+    public Item SectantBook; //пїЅпїЅпїЅпїЅ?
+    public Item BrainMod; //пїЅпїЅпїЅпїЅ?
     public Item TyranitGlasses;
     public Item NecklesOfNature;
 
@@ -162,7 +162,7 @@ public class ItemList : MonoBehaviour
                                       BuffList.NO_BUFF, new ItemRate(CommonItem_MinRate, CommonItem_MaxRate), 25, true, false, 0, UI.Audio[0], UI.UIEffect[0], UI.PlayerEffect[0]);
 
         Magazines = new Item(Item.Color.Red, false, 207, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE,
-                                      ZERO_ATTRIBUTE, 15, ZERO_ATTRIBUTE, UI.ItemIcon[21], UI.ItemQualityIcon[0], "Magazines", "+15 bullets",
+                                      ZERO_ATTRIBUTE, 15, ZERO_ATTRIBUTE, UI.ItemIcon[21], UI.ItemQualityIcon[0], "Magazine", "+15 bullets",
                                       BuffList.NO_BUFF, new ItemRate(CommonItem_MinRate, CommonItem_MaxRate));
 
         Overlap = new Item(Item.Color.Red, false, 208, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, 0.03f, ZERO_ATTRIBUTE,
@@ -175,7 +175,7 @@ public class ItemList : MonoBehaviour
 
         AcidBullet = new Item(Item.Color.Red, false, 2110, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, 10, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE,
                                       ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, UI.ItemIcon[24], UI.ItemQualityIcon[1], "AcidBullet", "Shots poison the victim \n +10 DMG",
-                                      BuffList.PoisonBuff, new ItemRate(RareItem_MinRate, RareItem_MaxRate)); //Дает бафф
+                                      BuffList.PoisonBuff, new ItemRate(RareItem_MinRate, RareItem_MaxRate)); //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 
         ChipSight = new Item(Item.Color.Red, false, 2111, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, 5, ZERO_ATTRIBUTE, 0.05f, ZERO_ATTRIBUTE,
                                       ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, UI.ItemIcon[25], UI.ItemQualityIcon[1], "ChipSight", "+2 shooting accuracy \n Increases chance of a critical attack \n Increases FOV",
