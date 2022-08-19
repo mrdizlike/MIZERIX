@@ -99,7 +99,7 @@ public class Network : MonoBehaviourPunCallbacks, IPunObservable
 
             if(PhotonNetwork.InRoom && photonView.IsMine)
             {
-                  if(AcceptCount == 1 && IsSearching) //Все игроки приняли матч, начинается загрузка карты
+                  if(AcceptCount == 2 && IsSearching) //Все игроки приняли матч, начинается загрузка карты
                   {
                        IsSearching = false;
                        photonView.RPC("LoadMap", RpcTarget.All);
@@ -140,6 +140,11 @@ public class Network : MonoBehaviourPunCallbacks, IPunObservable
     {
         PhotonNetwork.LeaveRoom();
         Debug.Log("Search stopped");
+    }
+
+    public void CloseGame()
+    {
+        Application.Quit();
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
