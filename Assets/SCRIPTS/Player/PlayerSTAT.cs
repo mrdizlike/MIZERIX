@@ -574,7 +574,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
             if (Buff.BuffType == Buff.BuffID.SoldierHeal_Buff)
             {
                 GetComponent<PhotonView>().RPC("EnableOrDisable", RpcTarget.All, 0);
-                //HPRegen_Amount -= .SomeValue; SecondSkill
+                HPRegen_Amount -= SM.Skills[1]._SomeValue;
             }
 
             if (Buff.BuffType == Buff.BuffID.Shield_Buff)

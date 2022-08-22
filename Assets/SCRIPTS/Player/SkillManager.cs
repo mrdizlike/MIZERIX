@@ -7,9 +7,6 @@ using Photon.Pun;
 
 public class SkillManager : MonoBehaviour
 {
-    const GameObject NO_EFFECT = null;
-    
-
     public Player_MAIN PM;
 
     public GameObject[] SkillLock_UI;
@@ -24,27 +21,20 @@ public class SkillManager : MonoBehaviour
     public float[] SomeValue;
 
     public AudioClip[] SkillAudio;
-    public AF_Skill FirstSkill;
-    public AF_SkillFactory F_SkillFactory;
+    public List<A_Skill> Skills;
+    public A_SkillFactory SkillFactory;
 
     private void Start()
     {
         switch(PM.PlayerClassification.ToString())
         {
             case "Soldier":
-                F_SkillFactory = gameObject.AddComponent<F_SoldierSkillFactory>();
-                Debug.Log(F_SkillFactory);
+                SkillFactory = gameObject.AddComponent<SoldierSkillFactory>();
                 break;
 
         }
 
-        FirstSkill = F_SkillFactory.CreateSkill();
-        Debug.Log(FirstSkill);
+        Skills = SkillFactory.CreateSkill();
     }
 
-    private void Update()
-    {
-        FirstSkill.SkillSys();
-        FirstSkill.SkillUpgrade();
-    }
 }

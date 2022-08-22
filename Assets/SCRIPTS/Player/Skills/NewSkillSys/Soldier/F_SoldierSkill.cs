@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class F_SoldierSkill : AF_Skill
+public class F_SoldierSkill : A_Skill
 {
     SkillManager SM;
     bool isDashing;
     float dashStartTime;
 
-    private void Start()
+    protected override void Start()
     {
         SM = GetComponent<SkillManager>();
         _PM = GetComponent<Player_MAIN>();
@@ -28,11 +28,12 @@ public class F_SoldierSkill : AF_Skill
         _SkillActive = false;
     }
 
-    public override void SkillSys()
+    protected override void Update()
     {
         if (GetComponent<PhotonView>().IsMine)
         {
             SoldierSkill();
+            SkillUpgrade();
             CoolDownSys();
 
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
@@ -81,5 +82,24 @@ public class F_SoldierSkill : AF_Skill
         isDashing = false;
         dashStartTime = 0;
         _SkillEffect.SetActive(false);
+    }
+
+    protected override void UpgradeSkillStat()
+    {
+        switch(_SkillLevel)
+        {
+            case 1:
+                _CooldownTime = 8;
+                _SomeValue = 1;
+                break;
+            case 2:
+                _CooldownTime = 7;
+                _SomeValue = 2;
+                break;
+            case 3:
+                _CooldownTime = 6;
+                _SomeValue = 3;
+                break;
+        }
     }
 }
