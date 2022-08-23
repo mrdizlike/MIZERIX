@@ -191,7 +191,7 @@ public class GunScript : MonoBehaviour
     }
 
     [PunRPC]
-    private void GunAnimationNetwork(int AnimationNumber)
+    public void GunAnimationNetwork(int AnimationNumber)
     {
         if(AnimationNumber == 0)
         {
@@ -206,6 +206,16 @@ public class GunScript : MonoBehaviour
         if (AnimationNumber == 2)
         {
             GunAnim.Play("Inspection");
+        }
+
+        if (AnimationNumber == 3)
+        {
+            GunAnim.Play("Hide");
+        }
+
+        if (AnimationNumber == 4)
+        {
+            GunAnim.Play("Pull_Out");
         }
     }
 }

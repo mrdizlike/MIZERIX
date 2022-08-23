@@ -24,8 +24,9 @@ public class T_SoldierSkill : A_Skill, IPunObservable
         _PM = GetComponent<Player_MAIN>();
         _PS = GetComponent<PlayerSTAT>();
 
-        SpawnPoint = GameObject.Find("BazookaMissle_Point").transform;
-        Bazooka = GameObject.Find("Bazooka");
+        SpawnPoint = SM.SkillObject[0].transform;
+        Bazooka = SM.SkillObject[1];
+        Missle = SM.SkillObject[2];
         Bazooka.SetActive(false);
 
         if (!GetComponent<PhotonView>().IsMine)
@@ -50,28 +51,35 @@ public class T_SoldierSkill : A_Skill, IPunObservable
     {
         if (GetComponent<PhotonView>().IsMine)
         {
-            SkillUpgrade();
-            CoolDownSys();
+                SkillUpgrade();
+                CoolDownSys();
 
-            if (Input.GetKey(_Key) && _SkillActive && !_PM.BlockUse && !_PM.SafeZone)
-            {
-                PrepareBazooka();
-            }
+                if(!_PS.Debuffs.Contains(BuffList.ShieldBuff))
+                {
+                    if (Input.GetKey(_Key) && _SkillActive && !_PM.BlockUse && !_PM.SafeZone)
+                    {
+                        PrepareBazooka();
+                    }
 
-            if(Input.GetKeyUp(_Key) && _SkillActive && !_PM.BlockUse && !_PM.SafeZone)
-            {
-                ShootBazooka();
-            }
+                    if(Input.GetKeyUp(_Key) && _SkillActive && !_PM.BlockUse && !_PM.SafeZone)
+                    {
+                        ShootBazooka();
+                    }
 
-            if (BazookaIsReady && _PS.Dead)
-            {
-                ShootBazooka();
-                GetComponent<PhotonView>().RPC("NetworkAnimation", RpcTarget.All, 2);
-            }
+                    if (BazookaIsReady && _PS.Dead)
+                    {
+                        ShootBazooka();
+                        GetComponent<PhotonView>().RPC("NetworkAnimation", RpcTarget.All, 2);
+                    }
+                }
+                if(_PS.Debuffs.Contains(BuffList.ShieldBuff) && BazookaIsReady)
+                {
+                    GetComponent<PhotonView>().RPC("NetworkAnimation", RpcTarget.All, 3);
+                }
         }
     }
 
-    public void PrepareBazooka()
+    void PrepareBazooka()
     {
         BazookaIsReady = true;
         _SkillEffect.GetComponent<ParticleSystem>().Pause();
@@ -79,7 +87,7 @@ public class T_SoldierSkill : A_Skill, IPunObservable
         GS.blockUsing = true;
     }
 
-    public void ShootBazooka()
+    void ShootBazooka()
     {
         GetComponent<PhotonView>().RPC("NetworkAnimation", RpcTarget.All, 0);
         GetComponent<PhotonView>().RPC("BazookaMissleRPC", RpcTarget.All);
@@ -96,7 +104,7 @@ public class T_SoldierSkill : A_Skill, IPunObservable
     [PunRPC]
     void BazookaMissleRPC()
     {
-        GameObject Missle_Object = PhotonNetwork.Instantiate("Bazooka_Bullet", SpawnPoint.position, SpawnPoint.rotation);
+        GameObject Missle_Object = Instantiate(Missle, SpawnPoint.position, SpawnPoint.rotation);
         Missle_Object.GetComponent<Bazooka_Missle>().Photon_Player = GetComponent<PhotonView>();
     }
 
@@ -122,12 +130,7 @@ public class T_SoldierSkill : A_Skill, IPunObservable
 
         if (AnimIndex == 3)
         {
-            WM.Weapon_Animator.Play("Hide");
-        }
-
-        if (AnimIndex == 4)
-        {
-            WM.Weapon_Animator.Play("Pull_Out");
+            Bazooka.GetComponent<Animator>().Play("Hide");
         }
     }
 

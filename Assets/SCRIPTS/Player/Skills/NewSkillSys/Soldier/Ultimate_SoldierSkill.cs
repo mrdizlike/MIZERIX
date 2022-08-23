@@ -18,30 +18,28 @@ public class Ultimate_SoldierSkill : A_Skill
     AudioClip UltimateMainSound;
 
     Text UltimateText;
-    GameObject UltimateParticles;
 
     protected override void Start()
     {
-        SM = GetComponent<SkillManager>();
-        _PM = GetComponent<Player_MAIN>();
-        _PS = GetComponent<PlayerSTAT>();
-        Soldier_Animator = GetComponent<Animator>();
-        AFX_Main = GetComponent<AudioSource>();
-        AFX_Background = GameObject.Find("GunShoot_Point").GetComponent<AudioSource>();
-        UltimateText = GameObject.Find("Cooldown").GetComponent<Text>();
-        UltimateText.gameObject.SetActive(false);
+        if (GetComponent<PhotonView>().IsMine)
+        {
+             SM = GetComponent<SkillManager>();
+            _PM = GetComponent<Player_MAIN>();
+            _PS = GetComponent<PlayerSTAT>();
+            Soldier_Animator = GetComponent<Animator>();
+            AFX_Main = GetComponent<AudioSource>();
+            AFX_Background = GameObject.Find("GunShoot_Point").GetComponent<AudioSource>();
+            UltimateText = GameObject.Find("Cooldown").GetComponent<Text>();
+            UltimateText.gameObject.SetActive(false);
 
-        ChargingSpeed = 1f;
-        _SkillLock_UI = SM.SkillLock_UI[3];
-        _SkillCoolDown_UI = SM.SkillCoolDown_UI[3];
-        _SkillUpgradeButton_UI = SM.SkillUpgradeButton_UI[3];
-        _SkillEffectUI = SM.SkillEffectUI[3];
-        _SkillEffect = SM.SkillEffect[3];
-        _SkillAudio = SM.SkillAudio[3];
-        _SomeValue = SM.SomeValue[3];
-        _CooldownTime = SM.SkillsCooldown[3];
-        _Key = KeyCode.X;
-        _SkillActive = false;
+            ChargingSpeed = 1f;
+            SkillBlock = true;
+            _SkillLock_UI = SM.SkillLock_UI[3];
+            _SkillCoolDown_UI = SM.SkillCoolDown_UI[3];
+            _SkillEffect = SM.SkillEffect[3];
+            _Key = KeyCode.X;
+            _SkillActive = false;
+        }
     }
 
     protected override void Update()
@@ -77,7 +75,7 @@ public class Ultimate_SoldierSkill : A_Skill
                 Skill_CoolDown += ChargingSpeed * Time.deltaTime;
             }
 
-            _SkillCoolDown_UI.GetComponent<Image>().fillAmount = Skill_CoolDown / 100;
+            SM.SkillCoolDown_UI[4].GetComponent<Image>().fillAmount = Skill_CoolDown / 100;
 
             if (Skill_CoolDown >= 100)
             {
@@ -128,11 +126,11 @@ public class Ultimate_SoldierSkill : A_Skill
             _PS.HP_MaxAmount += 250;
             _PS.Armor_Amount += 5;
             _PS.DMG_Amount += 15;
-            UltimateParticles.SetActive(true);
+            SM.SkillEffect[3].SetActive(true);
             _SkillActive = false;
             Skill_CoolDown = 0;
             UltimateText.gameObject.SetActive(true);
-            AFX_Main.PlayOneShot(_SkillAudio);
+            AFX_Main.PlayOneShot(SM.SkillAudio[3]);
         }
 
         if (AnimIndex == 1)
@@ -140,7 +138,7 @@ public class Ultimate_SoldierSkill : A_Skill
             _PS.HP_MaxAmount -= 250;
             _PS.Armor_Amount -= 5;
             _PS.DMG_Amount -= 15;
-            UltimateParticles.SetActive(false);
+            SM.SkillEffect[3].SetActive(false);
             Soldier_Animator.Play("Soldier_Idle_1");
         }
 

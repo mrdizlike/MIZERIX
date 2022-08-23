@@ -65,6 +65,11 @@ public abstract class A_Skill : MonoBehaviour
                 }
             }
         }
+
+        if(_SkillLevel > 0 && _PS.Dead)
+        {
+            _SkillLock_UI.SetActive(false);
+        }
     }
 
     protected abstract void UpgradeSkillStat();

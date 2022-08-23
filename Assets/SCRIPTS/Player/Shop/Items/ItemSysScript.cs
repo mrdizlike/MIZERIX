@@ -265,7 +265,7 @@ public class ItemSysScript : MonoBehaviourPun, IPunObservable
             Shield_Model.SetActive(true);
             AFX.PlayOneShot(Shield_Audio);
             P_M.MovementSpeed -= 0.5f;
-            //GetComponent<T_Skill>().NetworkAnimation(3); ThirdSkill
+            GS.GunAnimationNetwork(3);
             GS.blockUsing = true;
         }
 
@@ -275,7 +275,7 @@ public class ItemSysScript : MonoBehaviourPun, IPunObservable
             Shield_Model.GetComponent<Animator>().Play("Shield_Hide");
             AFX.PlayOneShot(Shield_Audio);
             P_M.MovementSpeed += 0.5f;
-            //GetComponent<T_Skill>().NetworkAnimation(4); ThirdSkill
+            GS.GunAnimationNetwork(4);
             GS.blockUsing = false;
         }
 

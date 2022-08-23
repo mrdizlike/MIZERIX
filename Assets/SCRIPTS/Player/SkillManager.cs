@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.InputSystem;
-using Photon.Pun;
 
 public class SkillManager : MonoBehaviour
 {
@@ -17,6 +14,7 @@ public class SkillManager : MonoBehaviour
     public GameObject[] ThirdSkillLVL_UI;
     public GameObject[] SkillEffectUI;
     public GameObject[] SkillEffect;
+    public GameObject[] SkillObject;
     public float[] SkillsCooldown;
     public float[] SomeValue;
 
