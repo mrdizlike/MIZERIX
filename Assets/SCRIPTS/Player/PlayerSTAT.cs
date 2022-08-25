@@ -104,7 +104,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
 
         if (Input.GetKeyDown(KeyCode.U))
         {
-            ReceiveDMG(10);
+            ReceiveDMG(500);
         }
     }
 
