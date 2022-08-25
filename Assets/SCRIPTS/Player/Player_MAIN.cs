@@ -65,6 +65,9 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
 
     public float MusicTimer;
 
+    [HideInInspector]
+    public Vector2 RunAxis;
+
     private void Start()
     {
         controller = GetComponent<CharacterController>(); //����� ����������
@@ -154,8 +157,8 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
         if (!ZL.Ziplined)
         {
             Vector3 moveDirection = Vector3.zero;
-            moveDirection.x = input.x;
-            moveDirection.z = input.y;
+            moveDirection.x = -RunAxis.y;
+            moveDirection.z = RunAxis.x;
             movementVector = moveDirection;
             if (!DisableMovement && !ChatOpen)
             {

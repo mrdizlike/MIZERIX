@@ -34,7 +34,7 @@ public class InputManager : MonoBehaviour
     {
         if (!motor.InShop)
         {
-            look.ProcessLook(onFoot.Look.ReadValue<Vector2>());
+            // look.ProcessLook(onFoot.Look.ReadValue<Vector2>());
         }
     }
 
