@@ -265,7 +265,7 @@ public class ItemSysScript : MonoBehaviourPun, IPunObservable
             Shield_Model.SetActive(true);
             AFX.PlayOneShot(Shield_Audio);
             P_M.MovementSpeed -= 0.5f;
-            GetComponent<T_Skill>().NetworkAnimation(3);
+            GS.GunAnimationNetwork(3);
             GS.blockUsing = true;
         }
 
@@ -275,7 +275,7 @@ public class ItemSysScript : MonoBehaviourPun, IPunObservable
             Shield_Model.GetComponent<Animator>().Play("Shield_Hide");
             AFX.PlayOneShot(Shield_Audio);
             P_M.MovementSpeed += 0.5f;
-            GetComponent<T_Skill>().NetworkAnimation(4);
+            GS.GunAnimationNetwork(4);
             GS.blockUsing = false;
         }
 
@@ -355,7 +355,7 @@ public class ItemSysScript : MonoBehaviourPun, IPunObservable
 
         if (ItemID == 2219 && !Disable)
         {
-            GetComponent<SkillManager>().BlockUse = true;
+            P_M.BlockUse = true;
             Mirror_Model.SetActive(true);
             GS.blockUsing = true;
             P_M.DisableMovement = true;
@@ -364,7 +364,7 @@ public class ItemSysScript : MonoBehaviourPun, IPunObservable
 
         if (ItemID == 2219 && Disable)
         {
-            GetComponent<SkillManager>().BlockUse = false;
+            P_M.BlockUse = false;
             Mirror_Model.SetActive(false);
             GS.blockUsing = false;
             P_M.DisableMovement = false;
