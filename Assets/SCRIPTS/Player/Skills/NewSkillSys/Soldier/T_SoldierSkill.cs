@@ -137,15 +137,15 @@ public class T_SoldierSkill : A_Skill, IPunObservable
         {
             case 1:
                 _CooldownTime = 8;
-                _SomeValue = 1;
+                _SomeValue = 4;
                 break;
             case 2:
                 _CooldownTime = 7;
-                _SomeValue = 2;
+                _SomeValue = 6;
                 break;
             case 3:
                 _CooldownTime = 6;
-                _SomeValue = 3;
+                _SomeValue = 8;
                 break;
         }
     }
