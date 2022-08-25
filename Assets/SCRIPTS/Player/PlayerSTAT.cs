@@ -19,6 +19,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
 
     public int KillsCount;
     public int DeathCount;
+    public int UpgradeTokenCount;
     public int TokenCount;
     public int SwapTokenCount;
 
@@ -103,7 +104,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
 
         if (Input.GetKeyDown(KeyCode.U))
         {
-            ReceiveDMG(10);
+            ReceiveDMG(500);
         }
     }
 
@@ -374,7 +375,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
                SwapTokenCount += 2;
                IL.UpdateItems();
                IL.ItemChance();
-               GetComponent<SkillManager>().UpgradeToken++;
+               UpgradeTokenCount += 1;
                photonView.RPC("ReceiveEXP", RpcTarget.All, 1);
                NextLevel = false;
             }
@@ -573,7 +574,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
             if (Buff.BuffType == Buff.BuffID.SoldierHeal_Buff)
             {
                 GetComponent<PhotonView>().RPC("EnableOrDisable", RpcTarget.All, 0);
-                HPRegen_Amount -= SM.Skills[1].SomeValue;
+                HPRegen_Amount -= SM.Skills[1]._SomeValue;
             }
 
             if (Buff.BuffType == Buff.BuffID.Shield_Buff)

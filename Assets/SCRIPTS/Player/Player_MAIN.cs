@@ -32,6 +32,7 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
     [Header("Values")]
     private Vector3 playerVelocity;
     private bool IsGrounded;
+    public bool BlockUse;
     public bool ChatOpen;
     public Skill.PlayerClass PlayerClassification;
     public bool CanZIP;
