@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using EZCameraShake;
 
 public class ZiplaneActivator : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class ZiplaneActivator : MonoBehaviour
             P_M = other.GetComponent<Player_MAIN>();
             IM = other.GetComponent<InputManager>();
             ziplineScript.TextForUse.GetComponent<Text>().text = "Press F to use zipline";
-            ziplineScript.TextForUse.SetActive(true);
+            ziplineScript.TextForUse.SetActive(true);           
         }
     }
 

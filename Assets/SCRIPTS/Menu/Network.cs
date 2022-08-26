@@ -136,6 +136,18 @@ public class Network : MonoBehaviourPunCallbacks, IPunObservable
         Debug.Log("Room has been created");
     }
 
+    public void TEST_StartMatch()
+    {
+        RoomOptions ro = new RoomOptions { 
+            MaxPlayers = 10,
+            IsOpen = true,
+            IsVisible = true
+            }; //Настройки комнаты
+
+        PhotonNetwork.JoinOrCreateRoom("NORMAL_5x5", ro, TypedLobby.Default);
+        PhotonNetwork.LoadLevel(2);
+    }
+
     public void StopSearchMatch()
     {
         PhotonNetwork.LeaveRoom();
