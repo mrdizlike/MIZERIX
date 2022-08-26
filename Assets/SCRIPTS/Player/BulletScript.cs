@@ -97,6 +97,10 @@ public class BulletScript : MonoBehaviour
                 Explode();
             }
 
+            if (Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.BleedDebuff) || Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.SectantBookBuff))
+            {
+                Photon_Player.GetComponent<PlayerSTAT>().HP_Amount += 10;
+            }
         }
 
         if (Photon_Player.tag == "LightTeam" && other.tag == "DarkTeam")
@@ -161,6 +165,10 @@ public class BulletScript : MonoBehaviour
                 Explode();
             }
 
+            if (Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.BleedDebuff) || Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.SectantBookBuff))
+            {
+                Photon_Player.GetComponent<PlayerSTAT>().HP_Amount += 10;
+            }
         }
 
         if (Photon_Player.tag == "DarkTeam" && other.tag == "LightTeam")
@@ -176,11 +184,6 @@ public class BulletScript : MonoBehaviour
                 if (Buff.Contains(BuffList.ElectricCrownBuff) && ElectricCrownChance <= 20)
                 {
                     other.GetComponent<PhotonView>().RPC("ItemEffect", RpcTarget.All, 116, false);
-                }
-
-                if (Buff.Contains(BuffList.BleedDebuff) || Buff.Contains(BuffList.SectantBookBuff))
-                {
-                    Photon_Player.GetComponent<PlayerSTAT>().HP_Amount += 10;
                 }
             }
         }
@@ -210,6 +213,11 @@ public class BulletScript : MonoBehaviour
                 other.GetComponent<LightBossSys>().Player = Photon_Player.transform;
             }
             other.GetComponent<PhotonView>().RPC("LightBossTakeDamage", RpcTarget.All, ExplosionDamage);
+
+            if (Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.BleedDebuff) || Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.SectantBookBuff))
+            {
+                Photon_Player.GetComponent<PlayerSTAT>().HP_Amount += 10;
+            }
         }
     }
 
@@ -223,6 +231,11 @@ public class BulletScript : MonoBehaviour
             }
             other.GetComponent<PhotonView>().RPC("DarkBossTakeDamage", RpcTarget.All, ExplosionDamage);
             other.GetComponent<DarkBossSys>().InSafeTimer = 0;
+
+            if (Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.BleedDebuff) || Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.SectantBookBuff))
+            {
+                Photon_Player.GetComponent<PlayerSTAT>().HP_Amount += 10;
+            }
         }
     }
 

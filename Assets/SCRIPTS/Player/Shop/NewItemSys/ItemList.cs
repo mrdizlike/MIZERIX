@@ -95,7 +95,7 @@ public class ItemList : MonoBehaviour
         Shield = new ActiveItem(Item.Color.Blue, 104, true, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE,
                                       ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, UI.ItemIcon[4], UI.ItemQualityIcon[0],
                                       "Shield", "Activate: Blocks incoming damage, you cannot shoot and use abilities \n Usage time: 2 sec \n Cooldown: 10 sec.",
-                                      BuffList.ShieldBuff, new ItemRate(0, 100), 15, true, false, 3, UI.Audio[1], UI.UIEffect[0], UI.PlayerEffect[1]);
+                                      BuffList.ShieldBuff, new ItemRate(CommonItem_MinRate, CommonItem_MaxRate), 15, true, false, 3, UI.Audio[1], UI.UIEffect[0], UI.PlayerEffect[1]);
 
         CronerChain = new ActiveItem(Item.Color.Blue, 115, true, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, 2, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE,
                                       ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, UI.ItemIcon[5], UI.ItemQualityIcon[1],
@@ -169,8 +169,8 @@ public class ItemList : MonoBehaviour
                                       ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, UI.ItemIcon[22], UI.ItemQualityIcon[0], "Overlap", "+2 shooting accuracy",
                                       BuffList.NO_BUFF, new ItemRate(CommonItem_MinRate, CommonItem_MaxRate));
 
-        StrangeCard = new Item(Item.Color.Red, false, 209, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, 5, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE,
-                                      ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, UI.ItemIcon[23], UI.ItemQualityIcon[0], "StrangeCard", "Increases chance of a critical attack",
+        StrangeCard = new Item(Item.Color.Red, false, 209, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, 10, 5, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE,
+                                      ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, UI.ItemIcon[23], UI.ItemQualityIcon[0], "StrangeCard", "Increases chance of a critical attack /n +10 DMG",
                                       BuffList.NO_BUFF, new ItemRate(CommonItem_MinRate, CommonItem_MaxRate));
 
         AcidBullet = new Item(Item.Color.Red, false, 2110, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, 10, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE, ZERO_ATTRIBUTE,

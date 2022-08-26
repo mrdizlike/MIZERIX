@@ -80,6 +80,7 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
             GetComponent<Look>().cam.GetComponent<Camera>().enabled = true;
             GetComponent<Look>().cam.GetComponent<AudioListener>().enabled = true;
             GetComponent<Look>().GunCam.GetComponent<Camera>().enabled = true;
+            CamShake.enabled = true;
             GetComponent<InputManager>().enabled = true;
             AUX.enabled = true;
             photonView.RPC("TakeUsername", RpcTarget.All, FindObjectOfType<ChatManager>().PlayerNickname);

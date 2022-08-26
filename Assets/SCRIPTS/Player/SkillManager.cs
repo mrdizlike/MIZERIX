@@ -35,4 +35,9 @@ public class SkillManager : MonoBehaviour
         Skills = SkillFactory.CreateSkill();
     }
 
+
+    public void TEST_ULTIMATECHARGE()
+    {
+        GetComponent<Ultimate_SoldierSkill>().Skill_CoolDown = 100;
+    }
 }

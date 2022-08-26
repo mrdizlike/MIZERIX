@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Photon.Pun;
 using System.Collections.Generic;
 
 namespace EZCameraShake
@@ -6,6 +7,7 @@ namespace EZCameraShake
     [AddComponentMenu("EZ Camera Shake/Camera Shaker")]
     public class CameraShaker : MonoBehaviour
     {
+        public Player_MAIN PM;
         /// <summary>
         /// The single instance of the CameraShaker in the current scene. Do not use if you have multiple instances.
         /// </summary>
@@ -36,7 +38,10 @@ namespace EZCameraShake
         void Awake()
         {
             Instance = this;
-            instanceList.Add(gameObject.name, this);
+            if(PM.photonView.IsMine)
+            {
+                instanceList.Add(gameObject.name, this);
+            }
         }
 
         void Update()

@@ -75,6 +75,12 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
     public Text MaxHPStat_Text;
     public Text MaxDMGStat_Text;
     public Text MaxArmorStat_Text;
+    public Text MovementSpeed_Text;
+    public Text Recoil_Text;
+    public Text ShootSpeed_Text;
+    public Text Regeneration_Text;
+    public Text Buffs_Text;
+    public Text Debuffs_Text;
 
     float lerpTimer;
     public float chipSpeed;
@@ -169,6 +175,15 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
             }
         }
 
+        //ДЛЯ ТЕСТА
+        for(int b = 0;b < Buffs.Count;b++)
+        {
+            Buffs_Text.text = Buffs[b].BuffType.ToString();
+            if(Buffs.Count == 0)
+            {
+                Buffs_Text.text = "";
+            }
+        }
     }
 
     [PunRPC]
@@ -186,6 +201,15 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
             }
         }
 
+        //ДЛЯ ТЕСТА
+        for(int d = 0;d < Debuffs.Count;d++)
+        {
+            Debuffs_Text.text = Debuffs[d].BuffType.ToString();
+            if(Debuffs.Count == 0)
+            {
+                Debuffs_Text.text = "";
+            }
+        }
     }
 
     [PunRPC]
@@ -380,6 +404,11 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
                NextLevel = false;
             }
         }
+
+        if(Level_Amount >= 11)
+        {
+            Level_Amount = 11;
+        }
     }
 
     void ItemSys()
@@ -534,6 +563,10 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
         MaxHPStat_Text.text = HP_MaxAmount.ToString();
         MaxDMGStat_Text.text = DMG_Amount.ToString();
         MaxArmorStat_Text.text = Armor_Amount.ToString();
+        MovementSpeed_Text.text = PM.MovementSpeed.ToString();
+        Recoil_Text.text = GS.Spread.ToString();
+        ShootSpeed_Text.text = GS.TimeBetweenShooting.ToString();
+        Regeneration_Text.text = HPRegen_Amount.ToString();
 
         if (Input.GetKey(KeyCode.F1))
         {
@@ -665,6 +698,11 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
                 Armor_Amount -= 3;
                 GUI_Effects.PlayerEffect[10].SetActive(false);
             }
+
+            if(Buff.BuffType == Buff.BuffID.TyranitBelt_Buff)
+            {
+                GetComponent<ItemSysScript>().photonView.RPC("ItemEffect", RpcTarget.All, 1313, true);
+            }
         }
     }
 
@@ -783,6 +821,11 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
             }
     }
 
+    public void TEST_LEVELUP()
+    {
+        NextLevel = true;
+    }
+
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -791,6 +834,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
             stream.SendNext(HP_MaxAmount);
             stream.SendNext(Armor_Amount);
             stream.SendNext(Level_Amount);
+            stream.SendNext(EnableDeBuff);
             stream.SendNext(gameObject.tag);
         }
         else if (stream.IsReading)
@@ -799,6 +843,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
             HP_MaxAmount = (float)stream.ReceiveNext();
             Armor_Amount = (float)stream.ReceiveNext();
             Level_Amount = (int)stream.ReceiveNext();
+            EnableDeBuff = (bool)stream.ReceiveNext();
             gameObject.tag = (string)stream.ReceiveNext();
         }
     }
