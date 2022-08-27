@@ -10,7 +10,7 @@ public class Ultimate_SoldierSkill : A_Skill
     Animator Soldier_Animator;
 
     bool SkillBlock;
-    float Skill_CoolDown;
+    public float Skill_CoolDown; //public для теста
     float ChargingSpeed;
 
     AudioSource AFX_Main;

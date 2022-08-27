@@ -8,7 +8,7 @@ public class Bazooka_Missle : MonoBehaviour
     public GameObject Particles;
     [SerializeField]
     public float MaxLifeTime;
-    private float speed = 1f;
+    public float speed = 1f;
     public float dmg = 25;
 
     private void Update()
@@ -29,28 +29,30 @@ public class Bazooka_Missle : MonoBehaviour
 
     void LightTeamDMG(Collider other)
     {
-        if (Photon_Player.tag == "LightTeam" && other.tag == "DarkTeam")
+        if (Photon_Player.tag == "LightTeam" && other.tag == "DarkTeam" && !other.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.TyranitBeltBuff))
         {
             other.GetComponent<PhotonView>().RPC("ReceiveDMG", RpcTarget.All, dmg);
-            other.GetComponent<Player_MAIN>().controller.Move(transform.TransformDirection(transform.up) * 10f * Time.deltaTime); //������������ �����, ����� ��������� � ������� ����
+            other.GetComponent<Player_MAIN>().controller.Move(transform.TransformDirection(transform.up) * 10f * Time.deltaTime);
             Photon_Player.GetComponent<GunScript>().DmgTextRelease(dmg);
             GameObject Boom = PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
             Boom.GetComponent<BazookaBoom>().Photon_Player = Photon_Player;
             Boom.GetComponent<BazookaBoom>().dmg = dmg;
             PhotonNetwork.Destroy(gameObject);
-
-            if (other.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.TyranitBeltBuff) && !other.GetComponent<PlayerSTAT>().Debuffs.Contains(BuffList.TyranitBeltBuff))
-            {
-                other.GetComponent<ItemSysScript>().TyranitBeltSys();
-                PhotonNetwork.Destroy(gameObject);
-                PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
-            }
+            PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
 
             if (!other.GetComponent<PlayerSTAT>().Dead && other.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.SpikeBuff))
             {
                 Photon_Player.GetComponent<Player_MAIN>().Hater = other.gameObject;
                 Photon_Player.RPC("ReceiveDMG", RpcTarget.All, dmg / 2);
             }
+        }
+
+        
+        if (other.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.TyranitBeltBuff) && !other.GetComponent<PlayerSTAT>().Debuffs.Contains(BuffList.TyranitBeltBuff))
+        {
+            other.GetComponent<PhotonView>().RPC("TyranitBeltSys", RpcTarget.All);
+            dmg = 0;
+            PhotonNetwork.Destroy(gameObject);
         }
 
         if (Photon_Player.tag == "LightTeam" && other.tag == "Throne")
@@ -66,27 +68,28 @@ public class Bazooka_Missle : MonoBehaviour
 
     void DarkTeamDMG(Collider other)
     {
-        if (Photon_Player.tag == "DarkTeam" && other.tag == "DarkTeam")
+        if (Photon_Player.tag == "DarkTeam" && other.tag == "LightTeam" && !other.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.TyranitBeltBuff))
         {
             other.GetComponent<PhotonView>().RPC("ReceiveDMG", RpcTarget.All, dmg);
             other.GetComponent<Player_MAIN>().controller.Move(transform.TransformDirection(transform.up) * 10f * Time.deltaTime); //������������ �����, ����� ��������� � ������� ����
             Photon_Player.GetComponent<GunScript>().DmgTextRelease(dmg);
+            GameObject Boom = PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
+            Boom.GetComponent<BazookaBoom>().Photon_Player = Photon_Player;
+            Boom.GetComponent<BazookaBoom>().dmg = dmg;
             PhotonNetwork.Destroy(gameObject);
             PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
-
-            if (other.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.TyranitBeltBuff) && !other.GetComponent<PlayerSTAT>().Debuffs.Contains(BuffList.TyranitBeltBuff))
-            {
-                other.GetComponent<ItemSysScript>().TyranitBeltSys();
-                GameObject Boom = PhotonNetwork.Instantiate(Particles.name, transform.position, transform.rotation);
-                Boom.GetComponent<BazookaBoom>().Photon_Player = Photon_Player;
-                Boom.GetComponent<BazookaBoom>().dmg = dmg;
-                PhotonNetwork.Destroy(gameObject);
-            }
 
             if (!other.GetComponent<PlayerSTAT>().Dead && other.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.SpikeBuff))
             {
                 Photon_Player.RPC("ReceiveDMG", RpcTarget.All, dmg / 2);
             }
+        }
+
+        if (other.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.TyranitBeltBuff) && !other.GetComponent<PlayerSTAT>().Debuffs.Contains(BuffList.TyranitBeltBuff))
+        {
+            other.GetComponent<PhotonView>().RPC("TyranitBeltSys", RpcTarget.All);
+            dmg = 0;
+            PhotonNetwork.Destroy(gameObject);
         }
 
         if (Photon_Player.tag == "DarkTeam" && other.tag == "Throne")

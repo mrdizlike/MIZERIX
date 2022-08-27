@@ -84,6 +84,8 @@ MonoBehaviour:
   - AcceptMatchRPC
   - EnableReadyPanel
   - LoadMap
+  - TEST_ITEM_BUTTON
+  - TyranitBeltSys
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

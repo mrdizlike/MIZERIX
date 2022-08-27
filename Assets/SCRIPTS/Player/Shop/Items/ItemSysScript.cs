@@ -152,6 +152,7 @@ public class ItemSysScript : MonoBehaviourPun, IPunObservable
         }
     }
 
+    [PunRPC]
     public void TyranitBeltSys()
     {
         if (photonView.IsMine)
@@ -166,12 +167,14 @@ public class ItemSysScript : MonoBehaviourPun, IPunObservable
                         {
                             Inv.slots[0].Aitem.Active = false;
                             PS.photonView.RPC("AddDeBuff", RpcTarget.All, Inv.slots[0].item.ItemName);
+                            PS.EnableDeBuff = true;
                         }
 
                         if (slot.SlotIndex == 1)
                         {
                             Inv.slots[1].Aitem.Active = false;
                             PS.photonView.RPC("AddDeBuff", RpcTarget.All, Inv.slots[1].item.ItemName);
+                            PS.EnableDeBuff = true;
                         }
                     }
                 }
@@ -187,7 +190,6 @@ public class ItemSysScript : MonoBehaviourPun, IPunObservable
 
             PS.Debuffs.Remove(BuffList.SectantCloackBuff);
             photonView.RPC("ItemEffect", RpcTarget.All, 2114, true);
-
         }
     }
 
@@ -197,7 +199,7 @@ public class ItemSysScript : MonoBehaviourPun, IPunObservable
         {
             int ThermalSensorChance = Random.Range(0, 99);
 
-            if(ThermalSensorChance <= 10)
+            if(ThermalSensorChance <= 5)
             {
                 photonView.RPC("ItemEffect", RpcTarget.All, 2115, false);
             }
@@ -206,7 +208,7 @@ public class ItemSysScript : MonoBehaviourPun, IPunObservable
 
     public void EnergyHandSys()
     {
-       if (Input.GetKeyDown(KeyCode.R) && PS.Buffs.Contains(BuffList.EnergyHandsBuff) && GS.reloading)
+       if (Input.GetKeyDown(KeyCode.R) && PS.Buffs.Contains(BuffList.EnergyHandsBuff) && GS.BulletsLeft < GS.MagazineSize)
        {
             photonView.RPC("ItemEffect", RpcTarget.All, 116, false); //��������� ���� ����� ��� � 116 �������
        }
@@ -309,6 +311,11 @@ public class ItemSysScript : MonoBehaviourPun, IPunObservable
             PlanB_Effect.SetActive(false);
             PS.Debuffs.Remove(BuffList.PlanB_Buff);
             PlanB_Model.GetComponent<Animator>().Play("PlanB_Destroy");
+        }
+
+        if(ItemID == 1313 && Disable)
+        {
+            PS.Debuffs.Remove(BuffList.TyranitBeltBuff);
         }
 
         if(ItemID == 206 && !Disable)

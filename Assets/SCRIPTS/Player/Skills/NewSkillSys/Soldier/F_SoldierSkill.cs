@@ -55,10 +55,12 @@ public class F_SoldierSkill : A_Skill
                 if (_PM.movementVector.Equals(Vector3.zero))
                 {
                     _PM.controller.Move(transform.TransformDirection(_PM.movementVector) * _SomeValue  * Time.deltaTime);
+                    _PM.CamShake.Instance.ShakeOnce(1f, 2f, 0, 1f);
                 }
                 else
                 {
                     _PM.controller.Move(transform.TransformDirection(_PM.movementVector) * _SomeValue * Time.deltaTime);
+                    _PM.CamShake.Instance.ShakeOnce(1f, 2f, 0, 1f);
                     _SkillActive = false;
                 }
             }

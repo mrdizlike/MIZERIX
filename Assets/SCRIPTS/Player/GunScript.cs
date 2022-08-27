@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using EZCameraShake;
 
 public class GunScript : MonoBehaviour
 {
@@ -110,7 +109,7 @@ public class GunScript : MonoBehaviour
         Vector3 directionWithoutSpread = targetPoint - AttackPoint.position;
 
         //Отдача
-
+        GetComponent<Player_MAIN>().CamShake.Instance.ShakeOnce(4f,4f,.1f,1f);
         float x = Random.Range(-Spread, Spread);
         float y = Random.Range(-Spread, Spread);
 

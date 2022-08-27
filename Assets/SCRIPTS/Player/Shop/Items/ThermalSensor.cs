@@ -11,7 +11,14 @@ public class ThermalSensor : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player" && other.GetComponent<PhotonView>().ViewID != PhotonID_Player.ViewID)
+        if (PhotonID_Player.tag == "LightTeam" && other.tag == "DarkTeam" && other.GetComponent<PhotonView>().ViewID != PhotonID_Player.ViewID)
+        {
+            other.GetComponent<PhotonView>().RPC("ReceiveDMG", RpcTarget.All, Damage);
+            PhotonID_Player.RPC("ItemEffect", RpcTarget.All, 2115, true);
+            PhotonID_Player.GetComponent<GunScript>().DmgTextRelease(Damage);
+        }
+
+        if (PhotonID_Player.tag == "DarkTeam" && other.tag == "LightTeam" && other.GetComponent<PhotonView>().ViewID != PhotonID_Player.ViewID)
         {
             other.GetComponent<PhotonView>().RPC("ReceiveDMG", RpcTarget.All, Damage);
             PhotonID_Player.RPC("ItemEffect", RpcTarget.All, 2115, true);
@@ -23,7 +30,7 @@ public class ThermalSensor : MonoBehaviour
             PhotonID_Player.RPC("ReceiveEXP", RpcTarget.All, 2);
             PhotonID_Player.RPC("ItemEffect", RpcTarget.All, 2115, true);
 
-            if (PhotonID_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.InfectedSkullBuff)) //Предмет
+            if (PhotonID_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.InfectedSkullBuff)) //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             {
                 PhotonID_Player.GetComponent<ItemSysScript>().InfectedSkull_Count++;
             }

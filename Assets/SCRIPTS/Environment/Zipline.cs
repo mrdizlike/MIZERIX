@@ -7,6 +7,8 @@ public class Zipline : MonoBehaviour
     public Transform endPOS;
     public GameObject TextForUse;
 
+    [Header("CameraShakeOptions")]
+
     public bool Ziplined;
 
     public IEnumerator StartZipLine()
@@ -18,6 +20,7 @@ public class Zipline : MonoBehaviour
         while (elapsedTime < time)
         {
             transform.position = Vector3.Lerp(startingPOS, endPOS.position, (elapsedTime / time));
+            GetComponent<Player_MAIN>().CamShake.Instance.ShakeOnce(1f, 2f, 0f, 0.2f);
             elapsedTime += Time.deltaTime;
             yield return null;
         }

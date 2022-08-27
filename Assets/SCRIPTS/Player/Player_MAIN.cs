@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using PlayFab;
-using PlayFab.ClientModels;
 using Photon.Pun;
+using EZCameraShake;
 public class Player_MAIN : MonoBehaviourPun, IPunObservable
 {
 
@@ -18,6 +15,8 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
     public AudioClip ZipLine_Sound;
     public AudioListener AUX;
     public KillFeed KF;
+
+    public CameraShaker CamShake;
 
     [Header("Objects")]
     public GameObject LightBaseProtection;
@@ -81,6 +80,7 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
             GetComponent<Look>().cam.GetComponent<Camera>().enabled = true;
             GetComponent<Look>().cam.GetComponent<AudioListener>().enabled = true;
             GetComponent<Look>().GunCam.GetComponent<Camera>().enabled = true;
+            CamShake.enabled = true;
             GetComponent<InputManager>().enabled = true;
             AUX.enabled = true;
             photonView.RPC("TakeUsername", RpcTarget.All, FindObjectOfType<ChatManager>().PlayerNickname);
@@ -219,6 +219,11 @@ public class Player_MAIN : MonoBehaviourPun, IPunObservable
         if(other.tag == "BossGround")
         {
             BossZone = true;
+        }
+
+        if(other.tag == "MissleEffect")
+        {
+            CamShake.Instance.ShakeOnce(5f, 10, 0, 1.5f);
         }
     }
 

@@ -92,6 +92,7 @@ public class T_SoldierSkill : A_Skill, IPunObservable
         GetComponent<PhotonView>().RPC("NetworkAnimation", RpcTarget.All, 0);
         GetComponent<PhotonView>().RPC("BazookaMissleRPC", RpcTarget.All);
         _SkillCoolDown_UI.GetComponent<Image>().fillAmount = 1;
+        _PM.CamShake.Instance.ShakeOnce(15f, 10, 0, 1.5f);
 
         _SkillEffect.SetActive(true);
         _SkillEffect.GetComponent<ParticleSystem>().Play();

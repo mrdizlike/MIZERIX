@@ -99,7 +99,7 @@ public class Network : MonoBehaviourPunCallbacks, IPunObservable
 
             if(PhotonNetwork.InRoom && photonView.IsMine)
             {
-                  if(AcceptCount == 1 && IsSearching) //Все игроки приняли матч, начинается загрузка карты
+                  if(AcceptCount == 3 && IsSearching) //Все игроки приняли матч, начинается загрузка карты
                   {
                        IsSearching = false;
                        photonView.RPC("LoadMap", RpcTarget.All);
@@ -136,6 +136,18 @@ public class Network : MonoBehaviourPunCallbacks, IPunObservable
         Debug.Log("Room has been created");
     }
 
+    public void TEST_StartMatch()
+    {
+        RoomOptions ro = new RoomOptions { 
+            MaxPlayers = 10,
+            IsOpen = true,
+            IsVisible = true
+            }; //Настройки комнаты
+
+        PhotonNetwork.JoinOrCreateRoom("NORMAL_5x5", ro, TypedLobby.Default);
+        PhotonNetwork.LoadLevel(2);
+    }
+
     public void StopSearchMatch()
     {
         PhotonNetwork.LeaveRoom();
@@ -149,7 +161,7 @@ public class Network : MonoBehaviourPunCallbacks, IPunObservable
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        if(PhotonNetwork.CurrentRoom.PlayerCount == 2 && PhotonNetwork.IsMasterClient) //Ждем соглашения всех игроков и запускаем карту
+        if(PhotonNetwork.CurrentRoom.PlayerCount == 3 && PhotonNetwork.IsMasterClient) //Ждем соглашения всех игроков и запускаем карту
         {
             Debug.Log("All players in room! Waiting accepting");
             photonView.RPC("EnableReadyPanel", RpcTarget.All);
