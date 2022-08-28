@@ -256,33 +256,39 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
         if (HP_Amount <= 0 && !Dead)
         {
             photonView.RPC("PlayerDeadAndRespawn", RpcTarget.All, 0); //������
-
-            foreach (Slot slot in GetComponent<Inventory>().slots)
+            HP_Amount = 1;
+            for (int i = 0; i < SS.InventoryScript.slots.Length; i++)
             {
-                if (Buffs.Contains(BuffList.CronerChainBuff))
+                if (Buffs.Contains(BuffList.EritondEyeBuff))
                 {
-                    GetComponent<ItemSysScript>().EritondEye_DeathCount += 1;
-                }
-
-                if (Buffs.Contains(BuffList.InfectedSkullBuff))
-                {
-                    GetComponent<ItemSysScript>().InfectedSkull_Count -= 2;
-                    HPRegen_Amount -= 2;
-                    GetComponent<ItemSysScript>().InfectedSkull_NeedCount -= 2;
-                }
-
-                if (GetComponent<ItemSysScript>().EritondEye_DeathCount == 2)
-                {
-                    if (slot.item.NewItemID == 2322)
+                    if (GetComponent<ItemSysScript>().EritondEye_DeathCount == 1)
                     {
-                        SS.SellRPCButton(slot.SlotIndex);
-                        GetComponent<ItemSysScript>().EritondEye_DeathCount = 0;
+                        if (SS.InventoryScript.slots[i].item.SomeBuff == BuffList.EritondEyeBuff)
+                        {
+                            SS.InventoryScript.slots[i].Aitem.Active = true;
+                            SS.SellRPCButton(SS.InventoryScript.slots[i].SlotIndex);
+                            SS.InventoryScript.CoolDownUI[i].fillAmount = 1;
+                            SS.InventoryScript.CoolDownUI[i].gameObject.SetActive(false);
+                            GetComponent<ItemSysScript>().EritondEye_DeathCount = 0;
+                        }
                     }
                 }
             }
+
+            if (Buffs.Contains(BuffList.EritondEyeBuff))
+            {
+                GetComponent<ItemSysScript>().EritondEye_DeathCount += 1;
+            }
+
+            if (Buffs.Contains(BuffList.InfectedSkullBuff))
+            {
+                GetComponent<ItemSysScript>().InfectedSkull_Count -= 2;
+                HPRegen_Amount -= 2;
+                GetComponent<ItemSysScript>().InfectedSkull_NeedCount -= 2;
+            }
         }
 
-        if (Dead && photonView.IsMine)
+            if (Dead && photonView.IsMine)
         {
             HP_Amount = 0;
             GetComponent<Look>().cam = DeadPlayer_Camera.GetComponent<Camera>();
@@ -429,18 +435,18 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
     {
         if (NumberOfAction == 0)
         {
-            Player_Camera.SetActive(false);
-            MainHeader_UI.SetActive(false);
             ColliderSys.SetActive(false);
             ColliderTrigger.enabled = false;
+            Player_Camera.SetActive(false);
+            MainHeader_UI.SetActive(false);
             CharController.enabled = false;
             PM.BossZone = false;
             GetComponent<Animator>().Play("Soldier_Die");
-            Dead = true;
             DeathCount++;
             PM.UnderAttack = false;
-            if (PM.Hater != null && PM.Hater.name != "LightBoss" && PM.Hater.name != "DarkBoss")
+            if (PM.Hater != null && PM.Hater.name != "LightBoss" && PM.Hater.name != "DarkBoss" && !Dead)
             {
+                Dead = true;
                 PM.KF.AddNewKillListing(PM.Hater.GetComponent<Player_MAIN>().PlayFab_Nickname, PM.PlayFab_Nickname);
 
                 PM.Hater.GetComponent<PlayerSTAT>().ReceiveEXP(2);
@@ -520,6 +526,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
             MainHeader_UI.SetActive(true);
             Player_Model.SetActive(true);
             HP_Amount = HP_MaxAmount;
+            GS.BulletsLeft = GS.MagazineSize;
             GetComponent<Animator>().Play("Soldier_Idle_1");
         }
     }
@@ -836,6 +843,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
             stream.SendNext(Level_Amount);
             stream.SendNext(EnableDeBuff);
             stream.SendNext(gameObject.tag);
+            stream.SendNext(Dead);
         }
         else if (stream.IsReading)
         {
@@ -845,6 +853,7 @@ public class PlayerSTAT : MonoBehaviourPun, IPunObservable
             Level_Amount = (int)stream.ReceiveNext();
             EnableDeBuff = (bool)stream.ReceiveNext();
             gameObject.tag = (string)stream.ReceiveNext();
+            Dead = (bool)stream.ReceiveNext();
         }
     }
 }

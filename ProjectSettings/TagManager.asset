@@ -20,6 +20,8 @@ TagManager:
   - DamageGround
   - DarkBoss
   - MissleEffect
+  - LightThrone
+  - DarkThrone
   layers:
   - Default
   - TransparentFX

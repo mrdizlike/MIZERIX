@@ -72,8 +72,14 @@ public class BazookaBoom : MonoBehaviour
     {
         if(GetComponent<PhotonView>().IsMine)
         {
-            LightTeamDMG(other);
-            DarkTeamDMG(other);
+            if (Photon_Player.tag == "LightTeam" && other.tag == "DarkTeam")
+            {
+                LightTeamDMG(other);
+            }
+            if (Photon_Player.tag == "DarkTeam" && other.tag == "LightTeam")
+            {
+                DarkTeamDMG(other);
+            }
         }
     }
 

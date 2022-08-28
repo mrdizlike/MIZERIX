@@ -106,7 +106,7 @@ MonoBehaviour:
   Photon_Player: {fileID: 0}
   Particles: {fileID: 1134129239631916, guid: 7e48ba6b1b968764490bbc70b66e3fe1, type: 3}
   MaxLifeTime: 5
-  speed: 1
+  speed: 0.6
   dmg: 75
 --- !u!54 &8841759967428596743
 Rigidbody:

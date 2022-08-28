@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-public class BossManager : MonoBehaviour
+public class BossManager : MonoBehaviourPun, IPunObservable
 {
     public Transform LightBossSpawnPoint;
     public Transform DarkBossSpawnPoint;
@@ -22,11 +22,14 @@ public class BossManager : MonoBehaviour
         {
             LightBossSpawnTime += Time.deltaTime;
 
-            if(LightBossSpawnTime >= 300)
+            if(LightBossSpawnTime >= 1)
             {
                 LightBossSpawnTime = 0;
                 LightBossIsDead = false;
-                PhotonNetwork.Instantiate(LightBossPrefab.name, LightBossSpawnPoint.position, LightBossSpawnPoint.rotation).name = "LightBoss";
+                if(photonView.IsMine)
+                {
+                    PhotonNetwork.Instantiate(LightBossPrefab.name, LightBossSpawnPoint.position, LightBossSpawnPoint.rotation).name = "LightBoss";
+                }
             }
         }
 
@@ -38,8 +41,29 @@ public class BossManager : MonoBehaviour
             {
                 DarkBossSpawnTime = 0;
                 DarkBossIsDead = false;
-                PhotonNetwork.Instantiate(DarkBossPrefab.name, DarkBossSpawnPoint.position, DarkBossSpawnPoint.rotation).name = "DarkBoss";
+                if(photonView.IsMine)
+                {
+                    PhotonNetwork.Instantiate(DarkBossPrefab.name, DarkBossSpawnPoint.position, DarkBossSpawnPoint.rotation).name = "DarkBoss";
+                }
             }
+        }
+    }
+
+    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(LightBossIsDead);
+            stream.SendNext(DarkBossIsDead);
+            stream.SendNext(LightBossSpawnTime);
+            stream.SendNext(DarkBossSpawnTime);
+        }
+        else if (stream.IsReading)
+        {
+            LightBossIsDead = (bool)stream.ReceiveNext();
+            DarkBossIsDead = (bool)stream.ReceiveNext();
+            LightBossSpawnTime = (float)stream.ReceiveNext();
+            DarkBossSpawnTime = (float)stream.ReceiveNext();
         }
     }
 }

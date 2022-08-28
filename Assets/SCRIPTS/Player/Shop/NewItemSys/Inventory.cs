@@ -18,7 +18,7 @@ public class Inventory : MonoBehaviour
     public Image[] SlotsHeaderUI;
     public Image[] CoolDownUI;
 
-    //Вернет индекс на пустой слот
+    //пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
     public SlotInfo EmptySlot()
     {
         for(int i = 0;i < slots.Length; i++)

@@ -122,10 +122,10 @@ public class Ultimate_SoldierSkill : A_Skill
     {
         if (AnimIndex == 0)
         {
-            _PS.HP_Amount += 250;
-            _PS.HP_MaxAmount += 250;
-            _PS.Armor_Amount += 5;
-            _PS.DMG_Amount += 15;
+            //_PS.HP_Amount += 250;
+            //_PS.HP_MaxAmount += 250;
+            //_PS.Armor_Amount += 5;
+            //_PS.DMG_Amount += 15;
             SM.SkillEffect[3].SetActive(true);
             _SkillActive = false;
             Skill_CoolDown = 0;
@@ -135,9 +135,9 @@ public class Ultimate_SoldierSkill : A_Skill
 
         if (AnimIndex == 1)
         {
-            _PS.HP_MaxAmount -= 250;
-            _PS.Armor_Amount -= 5;
-            _PS.DMG_Amount -= 15;
+            //_PS.HP_MaxAmount -= 250;
+            //_PS.Armor_Amount -= 5;
+            //_PS.DMG_Amount -= 15;
             SM.SkillEffect[3].SetActive(false);
             Soldier_Animator.Play("Soldier_Idle_1");
         }

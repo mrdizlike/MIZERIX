@@ -49,10 +49,15 @@ public class BulletScript : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
-    {        
-        LightTeamDMG(other);
-        DarkTeamDMG(other);
-
+    {
+        if (Photon_Player.tag == "LightTeam" && other.tag == "DarkTeam")
+        {
+            LightTeamDMG(other);
+        }
+        if (Photon_Player.tag == "DarkTeam" && other.tag == "LightTeam")
+        {
+            DarkTeamDMG(other);
+        }
         LightBossDMG(other);
         DarkBossDMG(other);
     }
@@ -75,8 +80,8 @@ public class BulletScript : MonoBehaviour
 
 
     private void LightTeamDMG(Collider other)
-    {
-        if (Photon_Player.tag == "LightTeam" && other.tag == "DarkTeam" && ExplodeOnTouch && other.GetComponent<PhotonView>().ViewID != Photon_Player.ViewID) 
+    { 
+        if (ExplodeOnTouch && other.GetComponent<PhotonView>().ViewID != Photon_Player.ViewID) 
         {
             other.GetComponent<Player_MAIN>().Hater = Photon_Player.gameObject;
             int CriticalAttackChance = Random.Range(0, 99);
@@ -97,7 +102,7 @@ public class BulletScript : MonoBehaviour
                 Explode();
             }
 
-            if (Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.BleedDebuff) || Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.SectantBookBuff))
+            if (Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.BleedBuff) || Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.SectantBookBuff))
             {
                 Photon_Player.GetComponent<PlayerSTAT>().HP_Amount += 10;
             }
@@ -126,7 +131,7 @@ public class BulletScript : MonoBehaviour
         }
 
 
-        if (Photon_Player.tag == "LightTeam" && other.tag == "Throne")
+        if (Photon_Player.tag == "LightTeam" && other.tag == "DarkThrone")
         {
             other.GetComponent<ThroneDamage>().TakeDamageDark(ExplosionDamage);
 
@@ -144,7 +149,7 @@ public class BulletScript : MonoBehaviour
 
     private void DarkTeamDMG(Collider other)
     {
-        if (Photon_Player.tag == "DarkTeam" && other.tag == "LightTeam" && ExplodeOnTouch && other.GetComponent<PhotonView>().ViewID != Photon_Player.ViewID) 
+        if (ExplodeOnTouch && other.GetComponent<PhotonView>().ViewID != Photon_Player.ViewID) 
         {
             other.GetComponent<Player_MAIN>().Hater = Photon_Player.gameObject;
             int CriticalAttackChance = Random.Range(0, 99);
@@ -165,7 +170,7 @@ public class BulletScript : MonoBehaviour
                 Explode();
             }
 
-            if (Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.BleedDebuff) || Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.SectantBookBuff))
+            if (Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.BleedBuff) || Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.SectantBookBuff))
             {
                 Photon_Player.GetComponent<PlayerSTAT>().HP_Amount += 10;
             }
@@ -188,7 +193,7 @@ public class BulletScript : MonoBehaviour
             }
         }
 
-        if (Photon_Player.tag == "DarkTeam" && other.tag == "Throne")
+        if (Photon_Player.tag == "DarkTeam" && other.tag == "LightThrone")
         {
             other.GetComponent<ThroneDamage>().TakeDamageLight(ExplosionDamage);
 
@@ -213,6 +218,7 @@ public class BulletScript : MonoBehaviour
                 other.GetComponent<LightBossSys>().Player = Photon_Player.transform;
             }
             other.GetComponent<PhotonView>().RPC("LightBossTakeDamage", RpcTarget.All, ExplosionDamage);
+            Explode();
 
             if (Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.BleedDebuff) || Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.SectantBookBuff))
             {
@@ -231,6 +237,7 @@ public class BulletScript : MonoBehaviour
             }
             other.GetComponent<PhotonView>().RPC("DarkBossTakeDamage", RpcTarget.All, ExplosionDamage);
             other.GetComponent<DarkBossSys>().InSafeTimer = 0;
+            Explode();
 
             if (Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.BleedDebuff) || Photon_Player.GetComponent<PlayerSTAT>().Buffs.Contains(BuffList.SectantBookBuff))
             {
