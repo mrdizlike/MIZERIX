@@ -21,14 +21,15 @@ public class Ultimate_SoldierSkill : A_Skill
 
     protected override void Start()
     {
+        SM = GetComponent<SkillManager>();
+        _PM = GetComponent<Player_MAIN>();
+        _PS = GetComponent<PlayerSTAT>();
+        Soldier_Animator = GetComponent<Animator>();
+        AFX_Main = GetComponent<AudioSource>();
+        AFX_Background = GameObject.Find("GunShoot_Point").GetComponent<AudioSource>();
+
         if (GetComponent<PhotonView>().IsMine)
         {
-             SM = GetComponent<SkillManager>();
-            _PM = GetComponent<Player_MAIN>();
-            _PS = GetComponent<PlayerSTAT>();
-            Soldier_Animator = GetComponent<Animator>();
-            AFX_Main = GetComponent<AudioSource>();
-            AFX_Background = GameObject.Find("GunShoot_Point").GetComponent<AudioSource>();
             UltimateText = GameObject.Find("Cooldown").GetComponent<Text>();
             UltimateText.gameObject.SetActive(false);
 
@@ -98,6 +99,7 @@ public class Ultimate_SoldierSkill : A_Skill
     void ActivateUltimate()
     {
         StartCoroutine(isActivated());
+        UltimateText.gameObject.SetActive(true);
         GetComponent<PhotonView>().RPC("NetworkSync", RpcTarget.All, 0);
     }
 
@@ -122,22 +124,21 @@ public class Ultimate_SoldierSkill : A_Skill
     {
         if (AnimIndex == 0)
         {
-            //_PS.HP_Amount += 250;
-            //_PS.HP_MaxAmount += 250;
-            //_PS.Armor_Amount += 5;
-            //_PS.DMG_Amount += 15;
+            _PS.HP_Amount += 250;
+            _PS.HP_MaxAmount += 250;
+            _PS.Armor_Amount += 5;
+            _PS.DMG_Amount += 15;
             SM.SkillEffect[3].SetActive(true);
             _SkillActive = false;
             Skill_CoolDown = 0;
-            UltimateText.gameObject.SetActive(true);
             AFX_Main.PlayOneShot(SM.SkillAudio[3]);
         }
 
         if (AnimIndex == 1)
         {
-            //_PS.HP_MaxAmount -= 250;
-            //_PS.Armor_Amount -= 5;
-            //_PS.DMG_Amount -= 15;
+            _PS.HP_MaxAmount -= 250;
+            _PS.Armor_Amount -= 5;
+            _PS.DMG_Amount -= 15;
             SM.SkillEffect[3].SetActive(false);
             Soldier_Animator.Play("Soldier_Idle_1");
         }
